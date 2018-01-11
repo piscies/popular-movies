@@ -1,0 +1,18 @@
+<resources>
+    <string name="app_name">PopularMovies</string>
+
+    <string name="action_sort_menu">Order by</string>
+    <string name="action_sort_most_popular">Most Popular</string>
+    <string name="action_sort_highest_rated">Highest Rated</string>
+
+    <string name="text_movie_details_rating">Average rating:</string>
+    <string name="text_movie_details_overview">Synopsis:</string>
+    <string name="text_movie_details_release_date">Release date:</string>
+
+    <string name="description_backdrop">Backdrop image for the movie.</string>
+    <string name="description_poster">Poster image for the movie</string>
+
+    <string name="toast_error_message">Something went wrong. Please try again later.</string>
+
+
+</resources>

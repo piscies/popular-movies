@@ -18,21 +18,17 @@ import br.com.marcosaraiva.popularmovies.BuildConfig;
  */
 
 public final class NetworkUtilities {
+    public static final String MOVIEDB_IMAGE_500_URL = "http://image.tmdb.org/t/p/w500/";
     private static final String ERROR_TAG = "NETWORK_UTILITIES";
-
     private static final String MOVIEDB_API_MOSTPOPULAR_URL = "https://api.themoviedb.org/3/movie/popular";
     private static final String MOVIEDB_API_TOPRATED_URL = "https://api.themoviedb.org/3/movie/top_rated";
-    public static final String MOVIEDB_IMAGE_500_URL = "http://image.tmdb.org/t/p/w500/";
-
     private static final String APIKEY_PARAM = "api_key";
 
-    public static URL buildMovieDbQueryURL(MovieSortByEnum sortBy)
-    {
+    public static URL buildMovieDbQueryURL(MovieSortByEnum sortBy) {
         //This decides how the result will be sorted.
         String chosenURLBasedOnSortBy = "";
 
-        switch(sortBy)
-        {
+        switch (sortBy) {
             case MostPopular:
                 chosenURLBasedOnSortBy = MOVIEDB_API_MOSTPOPULAR_URL;
                 break;
@@ -48,17 +44,15 @@ public final class NetworkUtilities {
         //Now creates an URL based on the created Uri
         URL finalMovieDbURL = null;
 
-        try
-        {
+        try {
             finalMovieDbURL = new URL(movieDbBuiltUri.toString());
-        }
-        catch(MalformedURLException e)
-        {
+        } catch (MalformedURLException e) {
             Log.e(ERROR_TAG, e.getMessage());
         }
 
         return finalMovieDbURL;
     }
+
     /**
      * This method returns the entire result from the HTTP response.
      *

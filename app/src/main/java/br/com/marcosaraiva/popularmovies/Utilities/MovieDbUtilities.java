@@ -3,9 +3,7 @@ package br.com.marcosaraiva.popularmovies.Utilities;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-import org.w3c.dom.DOMException;
 
-import java.net.UnknownServiceException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -16,8 +14,7 @@ import br.com.marcosaraiva.popularmovies.Model.Movie;
  */
 
 public final class MovieDbUtilities {
-    public static List<Movie> getListOfMoviesFromAPIJSONResponse(String movieDbJSONResponse) throws JSONException, RuntimeException
-    {
+    public static List<Movie> getListOfMoviesFromAPIJSONResponse(String movieDbJSONResponse) throws JSONException, RuntimeException {
         //Error JSON
         String MDB_STATUSCODE = "status_code";
         String MDB_STATUSMESSAGE = "status_message";
@@ -34,11 +31,9 @@ public final class MovieDbUtilities {
         JSONObject movieDbJSONObject = new JSONObject(movieDbJSONResponse);
 
         //If anything went wrong in the MovieDb API Call
-        if(movieDbJSONObject.has(MDB_STATUSCODE))
-        {
+        if (movieDbJSONObject.has(MDB_STATUSCODE)) {
             throw new RuntimeException(movieDbJSONObject.getString(MDB_STATUSMESSAGE));
-        }
-        else //If the API Call was successful
+        } else //If the API Call was successful
         {
             //Final list to be returned
             List<Movie> returnedMovieList = new ArrayList<>();
@@ -47,8 +42,7 @@ public final class MovieDbUtilities {
             JSONArray jsonMovieList = movieDbJSONObject.getJSONArray(MDB_RESULTS);
 
             //Iterates through each returned movie in JSON and converts to a Model Movie.
-            for(int i = 0; i < jsonMovieList.length(); i++)
-            {
+            for (int i = 0; i < jsonMovieList.length(); i++) {
                 //Gets a single movie in the JSON Array
                 JSONObject singleJSONMovie = jsonMovieList.getJSONObject(i);
 

@@ -3,10 +3,9 @@ package br.com.marcosaraiva.popularmovies;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
-import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.Menu;
@@ -39,8 +38,7 @@ public class MainActivity extends AppCompatActivity implements MovieListAdapter.
 
         //Handling shared preference for OrderBy
         SharedPreferences preference = getPreferences(MODE_PRIVATE);
-        if(!preference.contains(PREFERENCE_SORTBY))
-        {
+        if (!preference.contains(PREFERENCE_SORTBY)) {
             SharedPreferences.Editor editor = preference.edit();
 
             //Default sort by is "By Most Popular".
@@ -75,7 +73,7 @@ public class MainActivity extends AppCompatActivity implements MovieListAdapter.
         SharedPreferences preferences = getPreferences(MODE_PRIVATE);
         SharedPreferences.Editor editor = preferences.edit();
 
-        switch(item.getItemId()) {
+        switch (item.getItemId()) {
             case R.id.action_sort_most_popular:
                 editor.putInt(PREFERENCE_SORTBY, MovieSortByEnum.toInteger(MovieSortByEnum.MostPopular));
                 editor.apply();
@@ -91,15 +89,21 @@ public class MainActivity extends AppCompatActivity implements MovieListAdapter.
         }
     }
 
-    private void loadMovies()
-    {
+    private void loadMovies() {
         SharedPreferences preferences = getPreferences(MODE_PRIVATE);
-        MovieSortByEnum selectedSortBy =  MovieSortByEnum.fromInteger(preferences.getInt(PREFERENCE_SORTBY, 0));
+        MovieSortByEnum selectedSortBy = MovieSortByEnum.fromInteger(preferences.getInt(PREFERENCE_SORTBY, 0));
         new FetchMoviesFromMoviesDb_Task().execute(selectedSortBy);
     }
 
-    public class FetchMoviesFromMoviesDb_Task extends AsyncTask<MovieSortByEnum, Void, List<Movie>>
-    {
+    @Override
+    public void onMovieClick(Movie clickedMovie) {
+        Intent movieDetailsIntent = new Intent(this, MovieDetailsActivity.class);
+        movieDetailsIntent.putExtra(Movie.INTENT_EXTRA_MOVIE, clickedMovie);
+
+        startActivity(movieDetailsIntent);
+    }
+
+    public class FetchMoviesFromMoviesDb_Task extends AsyncTask<MovieSortByEnum, Void, List<Movie>> {
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
@@ -112,37 +116,29 @@ public class MainActivity extends AppCompatActivity implements MovieListAdapter.
             //If there are no parameters, calls the SortyBy Popularity by default
             if (params.length == 0) {
                 sortByParameter = MovieSortByEnum.MostPopular;
-            }
-            else
+            } else
                 sortByParameter = params[0];
 
             //Gets the correct URL to be called
             URL movieDbApiCallURL = NetworkUtilities.buildMovieDbQueryURL(sortByParameter);
 
             //If there was a problem during URL creation...
-            if(movieDbApiCallURL == null)
+            if (movieDbApiCallURL == null)
                 return null;
 
-            try
-            {
+            try {
                 String jsonMoviesRawResponse = NetworkUtilities
                         .getResponseFromHttpUrl(movieDbApiCallURL);
 
                 return MovieDbUtilities
                         .getListOfMoviesFromAPIJSONResponse(jsonMoviesRawResponse);
-            }
-            catch(RuntimeException e)
-            {
+            } catch (RuntimeException e) {
                 Log.e(ERROR_TAG, e.getMessage());
                 return null;
-            }
-            catch(java.io.IOException e)
-            {
+            } catch (java.io.IOException e) {
                 Log.e(ERROR_TAG, e.getMessage());
                 return null;
-            }
-            catch(JSONException e)
-            {
+            } catch (JSONException e) {
                 Log.e(ERROR_TAG, e.getMessage());
                 return null;
             }
@@ -157,13 +153,5 @@ public class MainActivity extends AppCompatActivity implements MovieListAdapter.
                 errorToast.show();
             }
         }
-    }
-
-    @Override
-    public void onMovieClick(Movie clickedMovie) {
-        Intent movieDetailsIntent = new Intent(this, MovieDetailsActivity.class);
-        movieDetailsIntent.putExtra(Movie.INTENT_EXTRA_MOVIE, clickedMovie);
-
-        startActivity(movieDetailsIntent);
     }
 }

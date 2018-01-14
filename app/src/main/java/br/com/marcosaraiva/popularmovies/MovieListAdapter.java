@@ -6,7 +6,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
-import android.widget.TextView;
 
 import com.squareup.picasso.Picasso;
 
@@ -20,30 +19,23 @@ import br.com.marcosaraiva.popularmovies.Utilities.NetworkUtilities;
  * This is an Adapter for the Movie List Recycler View
  */
 
-public class MovieListAdapter extends RecyclerView.Adapter<MovieListAdapter.MovieListAdapterViewHolder>
-{
+public class MovieListAdapter extends RecyclerView.Adapter<MovieListAdapter.MovieListAdapterViewHolder> {
     private Context mlaContext;
 
     //Data list of movies that are displayed
     private List<Movie> mlaMovieList;
-    public void setMovieList(List<Movie> newList)
-    {
-        mlaMovieList = newList;
-        notifyDataSetChanged();
-    }
-
     //Interface for the method that will be called when a RecyclerView item is clicked.
     private MovieListAdapterOnClickHandler mlaOnClickHandler;
-    public interface MovieListAdapterOnClickHandler
-    {
-        void onMovieClick(Movie clickedMovie);
-    }
 
     //Constructor
-    public MovieListAdapter(MovieListAdapterOnClickHandler pInClickHandler, Context pContext)
-    {
+    public MovieListAdapter(MovieListAdapterOnClickHandler pInClickHandler, Context pContext) {
         mlaOnClickHandler = pInClickHandler;
         mlaContext = pContext;
+    }
+
+    public void setMovieList(List<Movie> newList) {
+        mlaMovieList = newList;
+        notifyDataSetChanged();
     }
 
     /*All overrides necessary for the RecyclerView.Adapter class*/
@@ -72,22 +64,22 @@ public class MovieListAdapter extends RecyclerView.Adapter<MovieListAdapter.Movi
     @Override
     public int getItemCount() {
 
-        if(mlaMovieList != null)
-        {
+        if (mlaMovieList != null) {
             return mlaMovieList.size();
-        }
-        else
+        } else
             return 0;
+    }
+
+    public interface MovieListAdapterOnClickHandler {
+        void onMovieClick(Movie clickedMovie);
     }
     /*End of necessary overrides in RecyclerView.Adapter class*/
 
     /*ViewHolder class for the MovieListAdapter*/
-    public class MovieListAdapterViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener
-    {
+    public class MovieListAdapterViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         public ImageView mMoviePosterImageView;
 
-        public MovieListAdapterViewHolder(View view)
-        {
+        public MovieListAdapterViewHolder(View view) {
             super(view);
             mMoviePosterImageView = view.findViewById(R.id.iv_movie_poster);
             view.setOnClickListener(this);

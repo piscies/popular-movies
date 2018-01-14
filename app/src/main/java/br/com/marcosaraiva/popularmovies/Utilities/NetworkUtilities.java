@@ -20,32 +20,28 @@ import br.com.marcosaraiva.popularmovies.BuildConfig;
 public final class NetworkUtilities {
     private static final String ERROR_TAG = "NETWORK_UTILITIES";
 
-    private static final String MOVIEDB_API_DESCOVERMOVIE_URL = "https://api.themoviedb.org/3/discover/movie";
+    private static final String MOVIEDB_API_MOSTPOPULAR_URL = "https://api.themoviedb.org/3/movie/popular";
+    private static final String MOVIEDB_API_TOPRATED_URL = "https://api.themoviedb.org/3/movie/top_rated";
     public static final String MOVIEDB_IMAGE_500_URL = "http://image.tmdb.org/t/p/w500/";
-
-    private static final String SORTBY_PARAM = "sort_by";
-    private static final String SORTBY_POPULARITY = "popularity.desc";
-    private static final String SORTBY_RATE = "vote_average.desc";
 
     private static final String APIKEY_PARAM = "api_key";
 
     public static URL buildMovieDbQueryURL(MovieSortByEnum sortBy)
     {
         //This decides how the result will be sorted.
-        String decidedSortBy = "";
+        String chosenURLBasedOnSortBy = "";
 
         switch(sortBy)
         {
             case MostPopular:
-                decidedSortBy = SORTBY_POPULARITY;
+                chosenURLBasedOnSortBy = MOVIEDB_API_MOSTPOPULAR_URL;
                 break;
             case HighestRated:
-                decidedSortBy = SORTBY_RATE;
+                chosenURLBasedOnSortBy = MOVIEDB_API_TOPRATED_URL;
         }
 
         //Creates an Uri for the MovieDb call
-        Uri movieDbBuiltUri = Uri.parse(MOVIEDB_API_DESCOVERMOVIE_URL).buildUpon()
-                .appendQueryParameter(SORTBY_PARAM,decidedSortBy)
+        Uri movieDbBuiltUri = Uri.parse(chosenURLBasedOnSortBy).buildUpon()
                 .appendQueryParameter(APIKEY_PARAM, BuildConfig.MOVIE_DB_API_KEY)
                 .build();
 

@@ -64,12 +64,9 @@ public class MovieListAdapter extends RecyclerView.Adapter<MovieListAdapter.Movi
         //Movie that will fill the data in the specified ViewHolder
         Movie currentMovie = mlaMovieList.get(position);
 
-        //Fills data from movie to layout
-        holder.mMovieTitleTextView.setText(currentMovie.getTitle());
-
         //Movie poster
-        String backdropURL = NetworkUtilities.MOVIEDB_IMAGE_500_URL + currentMovie.getBackdropRelativePath();
-        Picasso.with(mlaContext).load(backdropURL).into(holder.mMovieBackdropImageView);
+        String backdropURL = NetworkUtilities.MOVIEDB_IMAGE_500_URL + currentMovie.getPosterRelativePath();
+        Picasso.with(mlaContext).load(backdropURL).into(holder.mMoviePosterImageView);
     }
 
     @Override
@@ -87,14 +84,12 @@ public class MovieListAdapter extends RecyclerView.Adapter<MovieListAdapter.Movi
     /*ViewHolder class for the MovieListAdapter*/
     public class MovieListAdapterViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener
     {
-        public TextView mMovieTitleTextView;
-        public ImageView mMovieBackdropImageView;
+        public ImageView mMoviePosterImageView;
 
         public MovieListAdapterViewHolder(View view)
         {
             super(view);
-            mMovieTitleTextView = view.findViewById(R.id.tv_movie_title);
-            mMovieBackdropImageView = view.findViewById(R.id.iv_movie_backdrop);
+            mMoviePosterImageView = view.findViewById(R.id.iv_movie_poster);
             view.setOnClickListener(this);
         }
 

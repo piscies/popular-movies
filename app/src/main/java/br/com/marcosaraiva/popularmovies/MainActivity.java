@@ -5,6 +5,7 @@ import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -55,7 +56,7 @@ public class MainActivity extends AppCompatActivity implements MovieListAdapter.
         mMoviesRecyclerView.setAdapter(mMovieListAdapter);
 
         RecyclerView.LayoutManager layoutManager
-                = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL,false);
+                = new GridLayoutManager(this, 3);
 
         mMoviesRecyclerView.setLayoutManager(layoutManager);
 

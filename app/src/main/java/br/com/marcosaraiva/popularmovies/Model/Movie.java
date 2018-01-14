@@ -40,16 +40,6 @@ public class Movie implements Parcelable {
         return posterRelativePath;
     }
 
-    private String backdropRelativePath;
-    public void setBackdropRelativePath(String newBackdropRelativePath)
-    {
-        backdropRelativePath = newBackdropRelativePath;
-    }
-    public String getBackdropRelativePath()
-    {
-        return backdropRelativePath;
-    }
-
     private double voteAverage;
     public void setVoteAverage(double newVoteAverage)
     {
@@ -78,7 +68,6 @@ public class Movie implements Parcelable {
         title = in.readString();
         overview = in.readString();
         posterRelativePath = in.readString();
-        backdropRelativePath = in.readString();
         voteAverage = in.readDouble();
         releaseDate = in.readString();
     }
@@ -93,7 +82,6 @@ public class Movie implements Parcelable {
         parcel.writeString(title);
         parcel.writeString(overview);
         parcel.writeString(posterRelativePath);
-        parcel.writeString(backdropRelativePath);
         parcel.writeDouble(voteAverage);
         parcel.writeString(releaseDate);
     }

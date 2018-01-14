@@ -26,7 +26,6 @@ public final class MovieDbUtilities {
         String MDB_RESULTS = "results";
         String MDB_RESULTS_TITLE = "title";
         String MDB_RESULTS_OVERVIEW = "overview";
-        String MDB_RESULTS_BACKDROP = "backdrop_path";
         String MDB_RESULTS_POSTER = "poster_path";
         String MDB_RESULTS_VOTE_AVERAGE = "vote_average";
         String MDB_RESULTS_RELEASE_DATE = "release_date";
@@ -60,7 +59,6 @@ public final class MovieDbUtilities {
                 singleModelMovie.setTitle(singleJSONMovie.getString(MDB_RESULTS_TITLE));
                 singleModelMovie.setOverview(singleJSONMovie.getString(MDB_RESULTS_OVERVIEW));
                 singleModelMovie.setPosterRelativePath(singleJSONMovie.getString(MDB_RESULTS_POSTER));
-                singleModelMovie.setBackdropRelativePath(singleJSONMovie.getString(MDB_RESULTS_BACKDROP));
                 singleModelMovie.setVoteAverage(singleJSONMovie.getDouble(MDB_RESULTS_VOTE_AVERAGE));
                 singleModelMovie.setReleaseDate(singleJSONMovie.getString(MDB_RESULTS_RELEASE_DATE));
 

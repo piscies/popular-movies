@@ -19,7 +19,7 @@ import java.util.List;
 
 import br.com.marcosaraiva.popularmovies.Model.Movie;
 import br.com.marcosaraiva.popularmovies.Utilities.MovieDbUtilities;
-import br.com.marcosaraiva.popularmovies.Utilities.MovieSortByEnum;
+import br.com.marcosaraiva.popularmovies.Utilities.MovieSortBy;
 import br.com.marcosaraiva.popularmovies.Utilities.NetworkUtilities;
 
 public class MainActivity extends AppCompatActivity implements MovieListAdapter.MovieListAdapterOnClickHandler {
@@ -42,7 +42,7 @@ public class MainActivity extends AppCompatActivity implements MovieListAdapter.
             SharedPreferences.Editor editor = preference.edit();
 
             //Default sort by is "By Most Popular".
-            editor.putInt(PREFERENCE_SORTBY, MovieSortByEnum.toInteger(MovieSortByEnum.MostPopular));
+            editor.putInt(PREFERENCE_SORTBY, MovieSortBy.MOST_POPULAR);
             editor.apply();
         }
 
@@ -75,12 +75,12 @@ public class MainActivity extends AppCompatActivity implements MovieListAdapter.
 
         switch (item.getItemId()) {
             case R.id.action_sort_most_popular:
-                editor.putInt(PREFERENCE_SORTBY, MovieSortByEnum.toInteger(MovieSortByEnum.MostPopular));
+                editor.putInt(PREFERENCE_SORTBY, MovieSortBy.MOST_POPULAR);
                 editor.apply();
                 loadMovies();
                 return true;
             case R.id.action_sort_highest_rated:
-                editor.putInt(PREFERENCE_SORTBY, MovieSortByEnum.toInteger(MovieSortByEnum.HighestRated));
+                editor.putInt(PREFERENCE_SORTBY, MovieSortBy.HIGHEST_RATED);
                 editor.apply();
                 loadMovies();
                 return true;
@@ -91,8 +91,8 @@ public class MainActivity extends AppCompatActivity implements MovieListAdapter.
 
     private void loadMovies() {
         SharedPreferences preferences = getPreferences(MODE_PRIVATE);
-        MovieSortByEnum selectedSortBy = MovieSortByEnum.fromInteger(preferences.getInt(PREFERENCE_SORTBY, 0));
-        new FetchMoviesFromMoviesDb_Task().execute(selectedSortBy);
+        @MovieSortBy int movieSortBy = preferences.getInt(PREFERENCE_SORTBY, 0);
+        new FetchMoviesFromMoviesDb_Task().execute(movieSortBy);
     }
 
     @Override
@@ -103,19 +103,19 @@ public class MainActivity extends AppCompatActivity implements MovieListAdapter.
         startActivity(movieDetailsIntent);
     }
 
-    public class FetchMoviesFromMoviesDb_Task extends AsyncTask<MovieSortByEnum, Void, List<Movie>> {
+    public class FetchMoviesFromMoviesDb_Task extends AsyncTask<Integer, Void, List<Movie>> {
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
         }
 
         @Override
-        protected List<Movie> doInBackground(MovieSortByEnum... params) {
-            MovieSortByEnum sortByParameter;
+        protected List<Movie> doInBackground(Integer... params) {
+            @MovieSortBy int sortByParameter;
 
             //If there are no parameters, calls the SortyBy Popularity by default
             if (params.length == 0) {
-                sortByParameter = MovieSortByEnum.MostPopular;
+                sortByParameter = MovieSortBy.MOST_POPULAR;
             } else
                 sortByParameter = params[0];
 

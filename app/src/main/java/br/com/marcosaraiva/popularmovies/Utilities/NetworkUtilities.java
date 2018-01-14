@@ -24,15 +24,15 @@ public final class NetworkUtilities {
     private static final String MOVIEDB_API_TOPRATED_URL = "https://api.themoviedb.org/3/movie/top_rated";
     private static final String APIKEY_PARAM = "api_key";
 
-    public static URL buildMovieDbQueryURL(MovieSortByEnum sortBy) {
+    public static URL buildMovieDbQueryURL(@MovieSortBy int sortBy) {
         //This decides how the result will be sorted.
         String chosenURLBasedOnSortBy = "";
 
         switch (sortBy) {
-            case MostPopular:
+            case MovieSortBy.MOST_POPULAR:
                 chosenURLBasedOnSortBy = MOVIEDB_API_MOSTPOPULAR_URL;
                 break;
-            case HighestRated:
+            case MovieSortBy.HIGHEST_RATED:
                 chosenURLBasedOnSortBy = MOVIEDB_API_TOPRATED_URL;
         }
 

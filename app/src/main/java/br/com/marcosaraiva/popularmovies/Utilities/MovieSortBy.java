@@ -9,7 +9,7 @@ import static br.com.marcosaraiva.popularmovies.Utilities.MovieSortBy.HIGHEST_RA
 import static br.com.marcosaraiva.popularmovies.Utilities.MovieSortBy.MOST_POPULAR;
 
 /**
- * Created by marco on 14/01/2018.
+ * This was created to act as an Enum variable for the Sort By feature.
  */
 
 @Retention(RetentionPolicy.SOURCE)

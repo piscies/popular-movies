@@ -21,6 +21,8 @@ public class Movie implements Parcelable {
             return new Movie[i];
         }
     };
+
+    private long movieId;
     private String title;
     private String overview;
     private String posterRelativePath;
@@ -32,11 +34,20 @@ public class Movie implements Parcelable {
 
     /*STARTING Parcelable methods*/
     private Movie(Parcel in) {
+        movieId = in.readLong();
         title = in.readString();
         overview = in.readString();
         posterRelativePath = in.readString();
         voteAverage = in.readDouble();
         releaseDate = in.readString();
+    }
+
+    public long getMovieId() {
+        return movieId;
+    }
+
+    public void setMovieId(long newMovieId) {
+        movieId = newMovieId;
     }
 
     public String getTitle() {
@@ -86,6 +97,7 @@ public class Movie implements Parcelable {
 
     @Override
     public void writeToParcel(Parcel parcel, int i) {
+        parcel.writeLong(movieId);
         parcel.writeString(title);
         parcel.writeString(overview);
         parcel.writeString(posterRelativePath);

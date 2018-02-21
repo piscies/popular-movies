@@ -22,22 +22,13 @@ public final class NetworkUtilities {
     private static final String ERROR_TAG = "NETWORK_UTILITIES";
     private static final String MOVIEDB_API_MOSTPOPULAR_URL = "https://api.themoviedb.org/3/movie/popular";
     private static final String MOVIEDB_API_TOPRATED_URL = "https://api.themoviedb.org/3/movie/top_rated";
+    private static final String MOVIEDB_API_TRAILERS_URL = "https://api.themoviedb.org/3/movie/%s/videos";
+    private static final String MOVIEDB_API_REVIEWS_URL = "https://api.themoviedb.org/3/movie/%s/reviews";
     private static final String APIKEY_PARAM = "api_key";
 
-    public static URL buildMovieDbQueryURL(@MovieSortBy int sortBy) {
-        //This decides how the result will be sorted.
-        String chosenURLBasedOnSortBy = "";
-
-        switch (sortBy) {
-            case MovieSortBy.MOST_POPULAR:
-                chosenURLBasedOnSortBy = MOVIEDB_API_MOSTPOPULAR_URL;
-                break;
-            case MovieSortBy.HIGHEST_RATED:
-                chosenURLBasedOnSortBy = MOVIEDB_API_TOPRATED_URL;
-        }
-
+    private static URL buildFinalMovieDbURL(String urlString){
         //Creates an Uri for the MovieDb call
-        Uri movieDbBuiltUri = Uri.parse(chosenURLBasedOnSortBy).buildUpon()
+        Uri movieDbBuiltUri = Uri.parse(urlString).buildUpon()
                 .appendQueryParameter(APIKEY_PARAM, BuildConfig.MOVIE_DB_API_KEY)
                 .build();
 
@@ -51,6 +42,35 @@ public final class NetworkUtilities {
         }
 
         return finalMovieDbURL;
+    }
+
+    public static URL buildMovieDbReviewURL(long movieId) {
+
+        String urlString = String.format(MOVIEDB_API_REVIEWS_URL, movieId);
+
+        return buildFinalMovieDbURL(urlString);
+    }
+
+    public static URL buildMovieDbTrailerURL(long movieId) {
+
+        String urlString = String.format(MOVIEDB_API_TRAILERS_URL, movieId);
+
+        return buildFinalMovieDbURL(urlString);
+    }
+
+    public static URL buildMovieDbQueryURL(@MovieSortBy int sortBy) {
+        //This decides how the result will be sorted.
+        String chosenURLBasedOnSortBy = "";
+
+        switch (sortBy) {
+            case MovieSortBy.MOST_POPULAR:
+                chosenURLBasedOnSortBy = MOVIEDB_API_MOSTPOPULAR_URL;
+                break;
+            case MovieSortBy.HIGHEST_RATED:
+                chosenURLBasedOnSortBy = MOVIEDB_API_TOPRATED_URL;
+        }
+
+        return buildFinalMovieDbURL(chosenURLBasedOnSortBy);
     }
 
     /**

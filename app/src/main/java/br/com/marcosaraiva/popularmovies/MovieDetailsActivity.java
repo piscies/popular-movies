@@ -19,12 +19,16 @@ import org.json.JSONException;
 import java.net.URL;
 import java.util.List;
 
+import br.com.marcosaraiva.popularmovies.AsyncTasks.AsyncTaskExtendedInterface;
+import br.com.marcosaraiva.popularmovies.AsyncTasks.FetchTrailersFromMoviesDb_Task;
 import br.com.marcosaraiva.popularmovies.Model.Movie;
 import br.com.marcosaraiva.popularmovies.Model.Trailer;
 import br.com.marcosaraiva.popularmovies.Utilities.MovieDbUtilities;
 import br.com.marcosaraiva.popularmovies.Utilities.NetworkUtilities;
 
-public class MovieDetailsActivity extends AppCompatActivity implements TrailerListAdapter.TrailerListAdapterOnClickHandler {
+public class MovieDetailsActivity
+        extends AppCompatActivity
+        implements TrailerListAdapter.TrailerListAdapterOnClickHandler, AsyncTaskExtendedInterface {
 
     private final String ERROR_TAG = "MOVIE_DETAILS_ACTIVITY";
 
@@ -78,7 +82,7 @@ public class MovieDetailsActivity extends AppCompatActivity implements TrailerLi
 
     private void loadTrailers(long movieId) {
 
-        new FetchTrailersFromMoviesDb_Task().execute(movieId);
+        new FetchTrailersFromMoviesDb_Task(this).execute(movieId);
     }
 
     @Override
@@ -105,55 +109,19 @@ public class MovieDetailsActivity extends AppCompatActivity implements TrailerLi
         }
     }
 
-    public class FetchTrailersFromMoviesDb_Task extends AsyncTask<Long, Void, List<Trailer>> {
-        @Override
-        protected void onPreExecute() {
-            super.onPreExecute();
+    @Override
+    public void onTaskCompleted(Object result, String task) {
+        if(result == null){
+            Toast errorToast = Toast.makeText(getApplicationContext(), R.string.toast_error_message, Toast.LENGTH_LONG);
+            errorToast.show();
         }
 
-        @Override
-        protected List<Trailer> doInBackground(Long... params) {
-            long movieId = 0;
-
-            //If there are no parameters, calls the SortyBy Popularity by default
-            if (params.length > 0)
-                movieId = params[0];
-            else //If no movieId was given...
-                return null;
-
-            //Gets the correct URL to be called
-            URL movieDbApiCallURL = NetworkUtilities.buildMovieDbTrailerURL(movieId);
-
-            //If there was a problem during URL creation...
-            if (movieDbApiCallURL == null)
-                return null;
-
-            try {
-                String jsonTrailersRawResponse = NetworkUtilities
-                        .getResponseFromHttpUrl(movieDbApiCallURL);
-
-                return MovieDbUtilities
-                        .getListOfTrailersFromAPIJSONResponse(jsonTrailersRawResponse);
-            } catch (RuntimeException e) {
-                Log.e(ERROR_TAG, e.getMessage());
-                return null;
-            } catch (java.io.IOException e) {
-                Log.e(ERROR_TAG, e.getMessage());
-                return null;
-            } catch (JSONException e) {
-                Log.e(ERROR_TAG, e.getMessage());
-                return null;
-            }
-        }
-
-        @Override
-        protected void onPostExecute(List<Trailer> trailerList) {
-            if (trailerList != null) {
-                mdTrailerListAdapter.setTrailerList(trailerList);
-            } else {
-                Toast errorToast = Toast.makeText(getApplicationContext(), R.string.toast_error_message, Toast.LENGTH_LONG);
-                errorToast.show();
-            }
+        switch(task){
+            case FetchTrailersFromMoviesDb_Task.TASK_NAME:
+                mdTrailerListAdapter.setTrailerList((List<Trailer>)result);
+                break;
+            default:
+                throw new IllegalArgumentException("Unknown task name");
         }
     }
 }

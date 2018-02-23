@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import br.com.marcosaraiva.popularmovies.Model.Movie;
+import br.com.marcosaraiva.popularmovies.Model.Review;
 import br.com.marcosaraiva.popularmovies.Model.Trailer;
 
 /**
@@ -15,7 +16,8 @@ import br.com.marcosaraiva.popularmovies.Model.Trailer;
  */
 
 public final class MovieDbUtilities {
-    public static List<Movie> getListOfMoviesFromAPIJSONResponse(String movieDbJSONResponse) throws JSONException, RuntimeException {
+    public static List<Movie> getListOfMoviesFromAPIJSONResponse(String movieDbJSONResponse)
+            throws JSONException, RuntimeException {
         //Error JSON
         String MDB_STATUSCODE = "status_code";
         String MDB_STATUSMESSAGE = "status_message";
@@ -67,7 +69,8 @@ public final class MovieDbUtilities {
         }
     }
 
-    public static List<Trailer> getListOfTrailersFromAPIJSONResponse(String movieDbJSONResponse) throws JSONException, RuntimeException {
+    public static List<Trailer> getListOfTrailersFromAPIJSONResponse(String movieDbJSONResponse)
+            throws JSONException, RuntimeException {
         //Error JSON
         String MDB_STATUSCODE = "status_code";
         String MDB_STATUSMESSAGE = "status_message";
@@ -120,6 +123,54 @@ public final class MovieDbUtilities {
             }
 
             return returnedTrailerList;
+        }
+    }
+
+    public static List<Review> getListOfReviewsFromAPIJSONResponse(String movieDbJSONResponse)
+            throws JSONException, RuntimeException {
+        //Error JSON
+        String MDB_STATUSCODE = "status_code";
+        String MDB_STATUSMESSAGE = "status_message";
+
+        //Success JSON
+        String MDB_RESULTS = "results";
+        String MDB_RESULTS_AUTHOR= "author";
+        String MDB_RESULTS_CONTENT = "content";
+        String MDB_RESULTS_URL = "url";
+
+
+        //Reads the returned JSON and converts it to a JSONObject.
+        JSONObject movieDbJSONObject = new JSONObject(movieDbJSONResponse);
+
+        //If anything went wrong in the MovieDb API Call
+        if (movieDbJSONObject.has(MDB_STATUSCODE)) {
+            throw new RuntimeException(movieDbJSONObject.getString(MDB_STATUSMESSAGE));
+        } else //If the API Call was successful
+        {
+            //Final list to be returned
+            List<Review> returnedReviewList = new ArrayList<>();
+
+            //Gets the results in the page returned by the MovieDb API
+            JSONArray jsonReviewList = movieDbJSONObject.getJSONArray(MDB_RESULTS);
+
+            //Iterates through each returned trailer in JSON and converts to a Model Trailer.
+            for (int i = 0; i < jsonReviewList.length(); i++) {
+                //Gets a single trailer in the JSON Array
+                JSONObject singleJSONReview = jsonReviewList.getJSONObject(i);
+
+                //Instantiates the trailer that will be added to the final list
+                Review singleModelReview = new Review();
+
+                //Fills the movie with data
+                singleModelReview.setAuthor(singleJSONReview.getString(MDB_RESULTS_AUTHOR));
+                singleModelReview.setReviewText(singleJSONReview.getString(MDB_RESULTS_CONTENT));
+                singleModelReview.setUrl(singleJSONReview.getString(MDB_RESULTS_URL));
+
+                //Adds the movie to the final list
+                returnedReviewList.add(singleModelReview);
+            }
+
+            return returnedReviewList;
         }
     }
 }

@@ -1,7 +1,6 @@
 package br.com.marcosaraiva.popularmovies;
 
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -18,6 +17,7 @@ import java.net.URL;
 import java.util.List;
 
 import br.com.marcosaraiva.popularmovies.Model.Movie;
+import br.com.marcosaraiva.popularmovies.Utilities.PopularMoviesPreferences;
 import br.com.marcosaraiva.popularmovies.Utilities.MovieDbUtilities;
 import br.com.marcosaraiva.popularmovies.Utilities.MovieSortBy;
 import br.com.marcosaraiva.popularmovies.Utilities.NetworkUtilities;
@@ -26,8 +26,6 @@ public class MainActivity extends AppCompatActivity implements MovieListAdapter.
 
     private final String ERROR_TAG = "MAIN_ACTIVITY";
 
-    private final String PREFERENCE_SORTBY = "PREF_SORTBY";
-
     private RecyclerView mMoviesRecyclerView;
     private MovieListAdapter mMovieListAdapter;
 
@@ -35,16 +33,6 @@ public class MainActivity extends AppCompatActivity implements MovieListAdapter.
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_movie_list);
-
-        //Handling shared preference for OrderBy
-        SharedPreferences preference = getPreferences(MODE_PRIVATE);
-        if (!preference.contains(PREFERENCE_SORTBY)) {
-            SharedPreferences.Editor editor = preference.edit();
-
-            //Default sort by is "By Most Popular".
-            editor.putInt(PREFERENCE_SORTBY, MovieSortBy.MOST_POPULAR);
-            editor.apply();
-        }
 
         //Movie List adapter
         mMovieListAdapter = new MovieListAdapter(this, this);
@@ -70,28 +58,24 @@ public class MainActivity extends AppCompatActivity implements MovieListAdapter.
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        SharedPreferences preferences = getPreferences(MODE_PRIVATE);
-        SharedPreferences.Editor editor = preferences.edit();
 
         switch (item.getItemId()) {
             case R.id.action_sort_most_popular:
-                editor.putInt(PREFERENCE_SORTBY, MovieSortBy.MOST_POPULAR);
-                editor.apply();
-                loadMovies();
-                return true;
+                PopularMoviesPreferences.setSortBy(MovieSortBy.MOST_POPULAR, this);
+                break;
             case R.id.action_sort_highest_rated:
-                editor.putInt(PREFERENCE_SORTBY, MovieSortBy.HIGHEST_RATED);
-                editor.apply();
-                loadMovies();
-                return true;
+                PopularMoviesPreferences.setSortBy(MovieSortBy.HIGHEST_RATED, this);
+                break;
             default:
                 return super.onOptionsItemSelected(item);
         }
+
+        loadMovies();
+        return true;
     }
 
     private void loadMovies() {
-        SharedPreferences preferences = getPreferences(MODE_PRIVATE);
-        @MovieSortBy int movieSortBy = preferences.getInt(PREFERENCE_SORTBY, 0);
+        @MovieSortBy int movieSortBy = PopularMoviesPreferences.getSortBy(this);
         new FetchMoviesFromMoviesDb_Task().execute(movieSortBy);
     }
 

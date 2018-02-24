@@ -142,7 +142,6 @@ public class MovieDetailsActivity
             Toast toast = Toast.makeText(this, getString(R.string.toast_error_message), Toast.LENGTH_LONG);
             toast.show();
         }
-
     }
 
     @Override

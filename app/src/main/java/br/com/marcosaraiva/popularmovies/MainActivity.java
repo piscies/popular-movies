@@ -1,6 +1,8 @@
 package br.com.marcosaraiva.popularmovies;
 
 import android.content.Intent;
+import android.database.Cursor;
+import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -16,11 +18,13 @@ import org.json.JSONException;
 import java.net.URL;
 import java.util.List;
 
+import br.com.marcosaraiva.popularmovies.Database.PopularMoviesContract;
 import br.com.marcosaraiva.popularmovies.Model.Movie;
 import br.com.marcosaraiva.popularmovies.Utilities.PopularMoviesPreferences;
 import br.com.marcosaraiva.popularmovies.Utilities.MovieDbUtilities;
-import br.com.marcosaraiva.popularmovies.Utilities.MovieSortBy;
+import br.com.marcosaraiva.popularmovies.Utilities.MovieDisplayMode;
 import br.com.marcosaraiva.popularmovies.Utilities.NetworkUtilities;
+import br.com.marcosaraiva.popularmovies.Utilities.PopularMoviesUtilities;
 
 public class MainActivity extends AppCompatActivity implements MovieListAdapter.MovieListAdapterOnClickHandler {
 
@@ -61,10 +65,13 @@ public class MainActivity extends AppCompatActivity implements MovieListAdapter.
 
         switch (item.getItemId()) {
             case R.id.action_sort_most_popular:
-                PopularMoviesPreferences.setSortBy(MovieSortBy.MOST_POPULAR, this);
+                PopularMoviesPreferences.setDisplayMode(MovieDisplayMode.MOST_POPULAR, this);
                 break;
             case R.id.action_sort_highest_rated:
-                PopularMoviesPreferences.setSortBy(MovieSortBy.HIGHEST_RATED, this);
+                PopularMoviesPreferences.setDisplayMode(MovieDisplayMode.HIGHEST_RATED, this);
+                break;
+            case R.id.action_show_favorites:
+                PopularMoviesPreferences.setDisplayMode(MovieDisplayMode.SHOW_FAVORITES, this);
                 break;
             default:
                 return super.onOptionsItemSelected(item);
@@ -75,8 +82,8 @@ public class MainActivity extends AppCompatActivity implements MovieListAdapter.
     }
 
     private void loadMovies() {
-        @MovieSortBy int movieSortBy = PopularMoviesPreferences.getSortBy(this);
-        new FetchMoviesFromMoviesDb_Task().execute(movieSortBy);
+        @MovieDisplayMode int movieDisplayMode = PopularMoviesPreferences.getDisplayMode(this);
+        new FetchMoviesFromMoviesDb_Task().execute(movieDisplayMode);
     }
 
     @Override
@@ -95,36 +102,42 @@ public class MainActivity extends AppCompatActivity implements MovieListAdapter.
 
         @Override
         protected List<Movie> doInBackground(Integer... params) {
-            @MovieSortBy int sortByParameter;
 
-            //If there are no parameters, calls the SortyBy Popularity by default
-            if (params.length == 0) {
-                sortByParameter = MovieSortBy.MOST_POPULAR;
-            } else
-                sortByParameter = params[0];
+            @MovieDisplayMode int displayModeParameter = params[0];
 
-            //Gets the correct URL to be called
-            URL movieDbApiCallURL = NetworkUtilities.buildMovieDbQueryURL(sortByParameter);
+            //MovieDb API Fetch
+            if(displayModeParameter != MovieDisplayMode.SHOW_FAVORITES) {
 
-            //If there was a problem during URL creation...
-            if (movieDbApiCallURL == null)
-                return null;
+                //Gets the correct URL to be called
+                URL movieDbApiCallURL = NetworkUtilities.buildMovieDbQueryURL(displayModeParameter);
 
-            try {
-                String jsonMoviesRawResponse = NetworkUtilities
-                        .getResponseFromHttpUrl(movieDbApiCallURL);
+                //If there was a problem during URL creation...
+                if (movieDbApiCallURL == null)
+                    return null;
 
-                return MovieDbUtilities
-                        .getListOfMoviesFromAPIJSONResponse(jsonMoviesRawResponse);
-            } catch (RuntimeException e) {
-                Log.e(ERROR_TAG, e.getMessage());
-                return null;
-            } catch (java.io.IOException e) {
-                Log.e(ERROR_TAG, e.getMessage());
-                return null;
-            } catch (JSONException e) {
-                Log.e(ERROR_TAG, e.getMessage());
-                return null;
+                try {
+                    String jsonMoviesRawResponse = NetworkUtilities
+                            .getResponseFromHttpUrl(movieDbApiCallURL);
+
+                    return MovieDbUtilities
+                            .getListOfMoviesFromAPIJSONResponse(jsonMoviesRawResponse);
+                } catch (RuntimeException e) {
+                    Log.e(ERROR_TAG, e.getMessage());
+                    return null;
+                } catch (java.io.IOException e) {
+                    Log.e(ERROR_TAG, e.getMessage());
+                    return null;
+                } catch (JSONException e) {
+                    Log.e(ERROR_TAG, e.getMessage());
+                    return null;
+                }
+            }
+            else{ //Gets favorite movies from DB
+                Uri favoriteMoviesUri = PopularMoviesContract.FavoriteMovieEntry.CONTENT_URI;
+                Cursor cursor = getContentResolver().query(favoriteMoviesUri, null, null,
+                        null, null);
+
+                return PopularMoviesUtilities.getMovieListFromCursor(cursor);
             }
         }
 

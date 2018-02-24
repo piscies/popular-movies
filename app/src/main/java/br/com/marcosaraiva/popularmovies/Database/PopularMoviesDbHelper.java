@@ -32,7 +32,7 @@ public class PopularMoviesDbHelper extends SQLiteOpenHelper {
                         FavoriteMovieEntry.COLUMN_OVERVIEW   + " TEXT NOT NULL, "  +
                         FavoriteMovieEntry.COLUMN_POSTER_PATH   + " TEXT NOT NULL, "  +
                         FavoriteMovieEntry.COLUMN_VOTE_AVERAGE   + " REAL NOT NULL, "  +
-                        FavoriteMovieEntry.COLUMN_RELEASE_DATE   + " INTEGER NOT NULL, "  +
+                        FavoriteMovieEntry.COLUMN_RELEASE_DATE   + " TEXT NOT NULL, "  +
                         FavoriteMovieEntry.COLUMN_RUNTIME + " INTEGER NOT NULL);";
 
         sqLiteDatabase.execSQL(SQL_CREATE_FAVORITES_TABLE);

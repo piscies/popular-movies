@@ -13,7 +13,7 @@ import java.util.Scanner;
 import br.com.marcosaraiva.popularmovies.BuildConfig;
 
 /**
- * This class handles Network functionalities.
+ * This class handles Network features.
  * The method "getResponseFromHttpUrl" was copied from Udacity Exercises.
  */
 
@@ -58,15 +58,15 @@ public final class NetworkUtilities {
         return buildFinalMovieDbURL(urlString);
     }
 
-    public static URL buildMovieDbQueryURL(@MovieSortBy int sortBy) {
+    public static URL buildMovieDbQueryURL(@MovieDisplayMode int displayMode) {
         //This decides how the result will be sorted.
         String chosenURLBasedOnSortBy = "";
 
-        switch (sortBy) {
-            case MovieSortBy.MOST_POPULAR:
+        switch (displayMode) {
+            case MovieDisplayMode.MOST_POPULAR:
                 chosenURLBasedOnSortBy = MOVIEDB_API_MOSTPOPULAR_URL;
                 break;
-            case MovieSortBy.HIGHEST_RATED:
+            case MovieDisplayMode.HIGHEST_RATED:
                 chosenURLBasedOnSortBy = MOVIEDB_API_TOPRATED_URL;
         }
 

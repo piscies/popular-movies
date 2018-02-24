@@ -10,20 +10,20 @@ import android.preference.PreferenceManager;
  */
 
 public class PopularMoviesPreferences {
-    private static final String PREFERENCE_SORTBY = "PREF_SORTBY";
+    private static final String PREFERENCE_DISPLAYMODE = "PREF_DISPLAYMODE";
 
-    public static void setSortBy(@MovieSortBy int newSortBy, Context context){
+    public static void setDisplayMode(@MovieDisplayMode int newDisplayMode, Context context){
         SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context);
         SharedPreferences.Editor editor = preferences.edit();
 
-        editor.putInt(PREFERENCE_SORTBY, newSortBy);
+        editor.putInt(PREFERENCE_DISPLAYMODE, newDisplayMode);
         editor.apply();
     }
 
-    public static int getSortBy(Context context){
+    public static int getDisplayMode(Context context){
         SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context);
 
-        //Default value will be "Most Popular" for the Sort By.
-        return preferences.getInt(PREFERENCE_SORTBY, MovieSortBy.MOST_POPULAR);
+        //Default value will be "Sort by Most Popular" for the Display Mode.
+        return preferences.getInt(PREFERENCE_DISPLAYMODE, MovieDisplayMode.MOST_POPULAR);
     }
 }

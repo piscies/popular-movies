@@ -11,6 +11,10 @@
             <item
                 android:id="@+id/action_sort_highest_rated"
                 android:title="@string/action_sort_highest_rated" />
+
+            <item
+                android:id="@+id/action_show_favorites"
+                android:title="@string/action_show_favorites" />
         </menu>
     </item>
 </menu>

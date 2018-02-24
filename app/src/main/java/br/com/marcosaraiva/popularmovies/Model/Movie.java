@@ -28,6 +28,7 @@ public class Movie implements Parcelable {
     private String posterRelativePath;
     private double voteAverage;
     private String releaseDate;
+    private int runtime;
 
     public Movie() {
     }
@@ -40,6 +41,7 @@ public class Movie implements Parcelable {
         posterRelativePath = in.readString();
         voteAverage = in.readDouble();
         releaseDate = in.readString();
+        runtime = in.readInt();
     }
 
     public long getMovieId() {
@@ -90,6 +92,14 @@ public class Movie implements Parcelable {
         releaseDate = newReleaseDate;
     }
 
+    public int getRuntime() {
+        return runtime;
+    }
+
+    public void setRuntime(int runtime) {
+        this.runtime = runtime;
+    }
+
     @Override
     public int describeContents() {
         return 0;
@@ -103,6 +113,7 @@ public class Movie implements Parcelable {
         parcel.writeString(posterRelativePath);
         parcel.writeDouble(voteAverage);
         parcel.writeString(releaseDate);
+        parcel.writeInt(runtime);
     }
     /*ENDING Parcelable methods*/
 }

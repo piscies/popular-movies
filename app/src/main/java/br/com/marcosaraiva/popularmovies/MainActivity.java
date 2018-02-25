@@ -18,6 +18,8 @@ import org.json.JSONException;
 import java.net.URL;
 import java.util.List;
 
+import br.com.marcosaraiva.popularmovies.AsyncTasks.AsyncTaskExtendedInterface;
+import br.com.marcosaraiva.popularmovies.AsyncTasks.FetchMoviesFromMoviesDb_Task;
 import br.com.marcosaraiva.popularmovies.Database.PopularMoviesContract;
 import br.com.marcosaraiva.popularmovies.Model.Movie;
 import br.com.marcosaraiva.popularmovies.Utilities.PopularMoviesPreferences;
@@ -26,7 +28,8 @@ import br.com.marcosaraiva.popularmovies.Utilities.MovieDisplayMode;
 import br.com.marcosaraiva.popularmovies.Utilities.NetworkUtilities;
 import br.com.marcosaraiva.popularmovies.Utilities.PopularMoviesUtilities;
 
-public class MainActivity extends AppCompatActivity implements MovieListAdapter.MovieListAdapterOnClickHandler {
+public class MainActivity extends AppCompatActivity
+        implements MovieListAdapter.MovieListAdapterOnClickHandler, AsyncTaskExtendedInterface {
 
     private final String ERROR_TAG = "MAIN_ACTIVITY";
 
@@ -83,7 +86,7 @@ public class MainActivity extends AppCompatActivity implements MovieListAdapter.
 
     private void loadMovies() {
         @MovieDisplayMode int movieDisplayMode = PopularMoviesPreferences.getDisplayMode(this);
-        new FetchMoviesFromMoviesDb_Task().execute(movieDisplayMode);
+        new FetchMoviesFromMoviesDb_Task(this, this).execute(movieDisplayMode);
     }
 
     @Override
@@ -94,61 +97,19 @@ public class MainActivity extends AppCompatActivity implements MovieListAdapter.
         startActivity(movieDetailsIntent);
     }
 
-    public class FetchMoviesFromMoviesDb_Task extends AsyncTask<Integer, Void, List<Movie>> {
-        @Override
-        protected void onPreExecute() {
-            super.onPreExecute();
+    @Override
+    public void onTaskCompleted(Object result, String task) {
+        if (result == null) {
+            Toast errorToast = Toast.makeText(getApplicationContext(), R.string.toast_error_message, Toast.LENGTH_LONG);
+            errorToast.show();
         }
 
-        @Override
-        protected List<Movie> doInBackground(Integer... params) {
-
-            @MovieDisplayMode int displayModeParameter = params[0];
-
-            //MovieDb API Fetch
-            if(displayModeParameter != MovieDisplayMode.SHOW_FAVORITES) {
-
-                //Gets the correct URL to be called
-                URL movieDbApiCallURL = NetworkUtilities.buildMovieDbQueryURL(displayModeParameter);
-
-                //If there was a problem during URL creation...
-                if (movieDbApiCallURL == null)
-                    return null;
-
-                try {
-                    String jsonMoviesRawResponse = NetworkUtilities
-                            .getResponseFromHttpUrl(movieDbApiCallURL);
-
-                    return MovieDbUtilities
-                            .getListOfMoviesFromAPIJSONResponse(jsonMoviesRawResponse);
-                } catch (RuntimeException e) {
-                    Log.e(ERROR_TAG, e.getMessage());
-                    return null;
-                } catch (java.io.IOException e) {
-                    Log.e(ERROR_TAG, e.getMessage());
-                    return null;
-                } catch (JSONException e) {
-                    Log.e(ERROR_TAG, e.getMessage());
-                    return null;
-                }
-            }
-            else{ //Gets favorite movies from DB
-                Uri favoriteMoviesUri = PopularMoviesContract.FavoriteMovieEntry.CONTENT_URI;
-                Cursor cursor = getContentResolver().query(favoriteMoviesUri, null, null,
-                        null, null);
-
-                return PopularMoviesUtilities.getMovieListFromCursor(cursor);
-            }
-        }
-
-        @Override
-        protected void onPostExecute(List<Movie> movieList) {
-            if (movieList != null) {
-                mMovieListAdapter.setMovieList(movieList);
-            } else {
-                Toast errorToast = Toast.makeText(getApplicationContext(), R.string.toast_error_message, Toast.LENGTH_LONG);
-                errorToast.show();
-            }
+        switch (task) {
+            case FetchMoviesFromMoviesDb_Task.TASK_NAME:
+                mMovieListAdapter.setMovieList((List<Movie>)result);
+                break;
+            default:
+                throw new IllegalArgumentException("Unknown task name");
         }
     }
 }

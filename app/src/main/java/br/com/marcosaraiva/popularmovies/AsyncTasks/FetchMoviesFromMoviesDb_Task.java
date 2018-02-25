@@ -46,6 +46,17 @@ public class FetchMoviesFromMoviesDb_Task extends AsyncTask<Integer, Void, List<
     protected List<Movie> doInBackground(Integer... params) {
 
         @MovieDisplayMode int displayModeParameter = params[0];
+        List<Movie> returnedMovieList;
+        List<Movie> favoriteMoviesList;
+
+        //Gets favorite movies from db. This will always be called because we'll mark
+        //favorite movies in the main screen.
+        Uri favoriteMoviesUri = PopularMoviesContract.FavoriteMovieEntry.CONTENT_URI;
+        Cursor cursor = taskContext.getContentResolver().query(favoriteMoviesUri, null, null,
+                null, null);
+
+        favoriteMoviesList = PopularMoviesUtilities.getMovieListFromCursor(cursor);
+
 
         //MovieDb API Fetch
         if(displayModeParameter != MovieDisplayMode.SHOW_FAVORITES) {
@@ -61,7 +72,7 @@ public class FetchMoviesFromMoviesDb_Task extends AsyncTask<Integer, Void, List<
                 String jsonMoviesRawResponse = NetworkUtilities
                         .getResponseFromHttpUrl(movieDbApiCallURL);
 
-                return MovieDbUtilities
+                returnedMovieList = MovieDbUtilities
                         .getListOfMoviesFromAPIJSONResponse(jsonMoviesRawResponse);
             } catch (RuntimeException e) {
                 Log.e(ERROR_TAG, e.getMessage());
@@ -73,14 +84,23 @@ public class FetchMoviesFromMoviesDb_Task extends AsyncTask<Integer, Void, List<
                 Log.e(ERROR_TAG, e.getMessage());
                 return null;
             }
-        }
-        else{ //Gets favorite movies from DB
-            Uri favoriteMoviesUri = PopularMoviesContract.FavoriteMovieEntry.CONTENT_URI;
-            Cursor cursor = taskContext.getContentResolver().query(favoriteMoviesUri, null, null,
-                    null, null);
 
-            return PopularMoviesUtilities.getMovieListFromCursor(cursor);
+            //Check which movie is a favorite
+            for(Movie m: favoriteMoviesList){
+                if(returnedMovieList.contains(m)){
+                    returnedMovieList.get(returnedMovieList.indexOf(m)).setFavorite(true);
+                }
+            }
         }
+        else{
+            returnedMovieList = favoriteMoviesList;
+
+            //Movies returned from the database will always be favorites
+            for(Movie m: returnedMovieList)
+                m.setFavorite(true);
+        }
+
+        return returnedMovieList;
     }
 
     @Override

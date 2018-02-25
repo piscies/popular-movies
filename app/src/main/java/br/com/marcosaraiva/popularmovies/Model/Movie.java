@@ -29,6 +29,7 @@ public class Movie implements Parcelable {
     private double voteAverage;
     private String releaseDate;
     private int runtime;
+    private boolean isFavorite;
 
     public Movie() {
     }
@@ -42,6 +43,7 @@ public class Movie implements Parcelable {
         voteAverage = in.readDouble();
         releaseDate = in.readString();
         runtime = in.readInt();
+        isFavorite = (Boolean) in.readValue(null);
     }
 
     public long getMovieId() {
@@ -100,6 +102,14 @@ public class Movie implements Parcelable {
         this.runtime = runtime;
     }
 
+    public boolean isFavorite() {
+        return isFavorite;
+    }
+
+    public void setFavorite(boolean favorite) {
+        isFavorite = favorite;
+    }
+
     @Override
     public int describeContents() {
         return 0;
@@ -114,6 +124,27 @@ public class Movie implements Parcelable {
         parcel.writeDouble(voteAverage);
         parcel.writeString(releaseDate);
         parcel.writeInt(runtime);
+        parcel.writeValue(isFavorite);
     }
     /*ENDING Parcelable methods*/
+
+    //I got a hint on this from
+    //https://stackoverflow.com/questions/25580604/query-an-array-list-of-object
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj)
+            return true;
+
+        if (obj == null || (this.getClass() != obj.getClass())) {
+            return false;
+        }
+
+        Movie reg = (Movie) obj;
+        return this.movieId == reg.getMovieId();
+    }
+
+    @Override
+    public int hashCode() {
+        return (int) movieId;
+    }
 }

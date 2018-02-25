@@ -1,11 +1,14 @@
 package br.com.marcosaraiva.popularmovies;
 
+import android.content.ContentValues;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.view.View;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -17,6 +20,7 @@ import java.util.List;
 import br.com.marcosaraiva.popularmovies.AsyncTasks.AsyncTaskExtendedInterface;
 import br.com.marcosaraiva.popularmovies.AsyncTasks.FetchReviewsFromMoviesDb_Task;
 import br.com.marcosaraiva.popularmovies.AsyncTasks.FetchTrailersFromMoviesDb_Task;
+import br.com.marcosaraiva.popularmovies.Database.PopularMoviesContract;
 import br.com.marcosaraiva.popularmovies.Model.Movie;
 import br.com.marcosaraiva.popularmovies.Model.Review;
 import br.com.marcosaraiva.popularmovies.Model.Trailer;
@@ -35,12 +39,15 @@ public class MovieDetailsActivity
     private TextView mdMovieAverageRatingTextView;
     private TextView mdMovieReleaseDateTextView;
     private ImageView mdMoviePosterImageView;
+    private ImageButton mdFavoriteIconImageButton;
 
     private RecyclerView mdTrailersRecyclerView;
     private TrailerListAdapter mdTrailerListAdapter;
 
     private RecyclerView mdReviewsRecyclerView;
     private ReviewListAdapter mdReviewListAdapter;
+
+    private Movie mdMovie;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,17 +59,18 @@ public class MovieDetailsActivity
         mdMovieAverageRatingTextView = findViewById(R.id.tv_movie_details_rating);
         mdMovieReleaseDateTextView = findViewById(R.id.tv_movie_details_release_date);
         mdMoviePosterImageView = findViewById(R.id.iv_movie_details_poster);
+        mdFavoriteIconImageButton = findViewById(R.id.ib_set_favorite);
 
         //Finds the movie in the Intent
-        Movie detailedMovie = getIntent().getParcelableExtra(Movie.INTENT_EXTRA_MOVIE);
+        mdMovie = getIntent().getParcelableExtra(Movie.INTENT_EXTRA_MOVIE);
 
         //Displays the details
-        mdMovieTitleTextView.setText(detailedMovie.getTitle());
-        mdMovieOverviewTextView.setText(detailedMovie.getOverview());
-        mdMovieAverageRatingTextView.setText(Double.toString(detailedMovie.getVoteAverage()));
-        mdMovieReleaseDateTextView.setText(detailedMovie.getReleaseDate());
+        mdMovieTitleTextView.setText(mdMovie.getTitle());
+        mdMovieOverviewTextView.setText(mdMovie.getOverview());
+        mdMovieAverageRatingTextView.setText(Double.toString(mdMovie.getVoteAverage()));
+        mdMovieReleaseDateTextView.setText(mdMovie.getReleaseDate());
 
-        String posterURL = NetworkUtilities.MOVIEDB_IMAGE_500_URL + detailedMovie.getPosterRelativePath();
+        String posterURL = NetworkUtilities.MOVIEDB_IMAGE_500_URL + mdMovie.getPosterRelativePath();
         Picasso.with(this).load(posterURL).into(mdMoviePosterImageView);
 
         //Trailer List adapter
@@ -89,9 +97,11 @@ public class MovieDetailsActivity
 
         mdReviewsRecyclerView.setLayoutManager(reviewLayoutManager);
 
+        setFavoriteIcon();
+
         //Loads the trailers list
-        loadTrailers(detailedMovie.getMovieId());
-        loadReviews(detailedMovie.getMovieId());
+        loadTrailers(mdMovie.getMovieId());
+        loadReviews(mdMovie.getMovieId());
     }
 
     private void loadTrailers(long movieId) {
@@ -160,6 +170,41 @@ public class MovieDetailsActivity
                 break;
             default:
                 throw new IllegalArgumentException("Unknown task name");
+        }
+    }
+
+    public void saveOrRemoveFavoriteMovie(View view){
+        Uri contentUri = PopularMoviesContract.FavoriteMovieEntry.CONTENT_URI;
+
+        //TODO: Needs to run asynchronously? (probably)
+        if(mdMovie.isFavorite()){
+            contentUri = contentUri.withAppendedPath(contentUri, String.valueOf(mdMovie.getMovieId()));
+            getContentResolver().delete(contentUri, null, null);
+            mdMovie.setFavorite(false);
+        }
+        else{
+            ContentValues favoriteMovieValues = new ContentValues();
+            favoriteMovieValues.put(PopularMoviesContract.FavoriteMovieEntry.COLUMN_MOVIE_ID, mdMovie.getMovieId());
+            favoriteMovieValues.put(PopularMoviesContract.FavoriteMovieEntry.COLUMN_OVERVIEW, mdMovie.getOverview());
+            favoriteMovieValues.put(PopularMoviesContract.FavoriteMovieEntry.COLUMN_POSTER_PATH, mdMovie.getPosterRelativePath());
+            favoriteMovieValues.put(PopularMoviesContract.FavoriteMovieEntry.COLUMN_RELEASE_DATE, mdMovie.getReleaseDate());
+            favoriteMovieValues.put(PopularMoviesContract.FavoriteMovieEntry.COLUMN_RUNTIME, mdMovie.getRuntime());
+            favoriteMovieValues.put(PopularMoviesContract.FavoriteMovieEntry.COLUMN_TITLE, mdMovie.getTitle());
+            favoriteMovieValues.put(PopularMoviesContract.FavoriteMovieEntry.COLUMN_VOTE_AVERAGE, mdMovie.getVoteAverage());
+
+            getContentResolver().insert(contentUri, favoriteMovieValues);
+            mdMovie.setFavorite(true);
+        }
+
+        setFavoriteIcon();
+    }
+
+    private void setFavoriteIcon(){
+        if(mdMovie.isFavorite()){
+            mdFavoriteIconImageButton.setImageResource(R.drawable.ic_favorite_star_filled_foreground);
+        }
+        else{
+            mdFavoriteIconImageButton.setImageResource(R.drawable.ic_favorite_star_empty_foreground);
         }
     }
 }

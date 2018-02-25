@@ -18,6 +18,7 @@ import javax.xml.transform.URIResolver;
 public class PopularMoviesProvider extends ContentProvider {
 
     public static final int CODE_FAVORITE_MOVIES = 101;
+    public static final int CODE_FAVORITE_MOVIES_SINGLE = 102;
 
     private UriMatcher uriMatcher = buildUriMatcher();
     private PopularMoviesDbHelper dbHelper;
@@ -26,6 +27,7 @@ public class PopularMoviesProvider extends ContentProvider {
         final UriMatcher matcher = new UriMatcher(UriMatcher.NO_MATCH);
 
         matcher.addURI(PopularMoviesContract.CONTENT_AUTHORITY, PopularMoviesContract.PATH_FAVORITES, CODE_FAVORITE_MOVIES);
+        matcher.addURI(PopularMoviesContract.CONTENT_AUTHORITY, PopularMoviesContract.PATH_FAVORITES + "/#", CODE_FAVORITE_MOVIES_SINGLE);
 
         return matcher;
     }
@@ -83,7 +85,7 @@ public class PopularMoviesProvider extends ContentProvider {
                 break;
 
             default:
-                throw new UnsupportedOperationException("Unknown uri: " + uri.toString());
+                throw new UnsupportedOperationException("Unknown uri for insertion: " + uri.toString());
         }
 
         getContext().getContentResolver().notifyChange(uri, null);
@@ -92,8 +94,23 @@ public class PopularMoviesProvider extends ContentProvider {
     }
 
     @Override
-    public int delete(@NonNull Uri uri, @Nullable String s, @Nullable String[] strings) {
-        throw new UnsupportedOperationException("Delete is not implemented yet");
+    public int delete(@NonNull Uri uri, @Nullable String whereClause, @Nullable String[] whereArgs) {
+        int nRowsDeleted = 0;
+
+        switch(uriMatcher.match(uri)){
+            case CODE_FAVORITE_MOVIES_SINGLE:
+                nRowsDeleted = dbHelper.getWritableDatabase().delete(PopularMoviesContract.FavoriteMovieEntry.TABLE_NAME,
+                        PopularMoviesContract.FavoriteMovieEntry.COLUMN_MOVIE_ID + " = ?",
+                        new String[]{ uri.getLastPathSegment() });
+                break;
+
+            default:
+                throw new UnsupportedOperationException("Unknown uri for deletion: " + uri.toString());
+        }
+
+        getContext().getContentResolver().notifyChange(uri, null);
+
+        return nRowsDeleted;
     }
 
     @Override

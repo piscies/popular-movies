@@ -188,7 +188,7 @@ public class MovieDetailsActivity
         mdMovieOverviewTextView.setText(mdMovie.getOverview());
         mdMovieAverageRatingTextView.setText(Double.toString(mdMovie.getVoteAverage()));
         mdMovieReleaseDateTextView.setText(mdMovie.getReleaseDate());
-        mdMovieRuntimeTextView.setText(mdMovie.getRuntime());
+        mdMovieRuntimeTextView.setText(Integer.toString(mdMovie.getRuntime()));
 
         String posterURL = NetworkUtilities.MOVIEDB_IMAGE_500_URL + mdMovie.getPosterRelativePath();
         Picasso.with(this).load(posterURL).into(mdMoviePosterImageView);

@@ -22,6 +22,7 @@ public final class NetworkUtilities {
     private static final String ERROR_TAG = "NETWORK_UTILITIES";
     private static final String MOVIEDB_API_MOSTPOPULAR_URL = "https://api.themoviedb.org/3/movie/popular";
     private static final String MOVIEDB_API_TOPRATED_URL = "https://api.themoviedb.org/3/movie/top_rated";
+    private static final String MOVIEDB_API_MOVIEDETAIL_URL = "https://api.themoviedb.org/3/movie/%s";
     private static final String MOVIEDB_API_TRAILERS_URL = "https://api.themoviedb.org/3/movie/%s/videos";
     private static final String MOVIEDB_API_REVIEWS_URL = "https://api.themoviedb.org/3/movie/%s/reviews";
     private static final String APIKEY_PARAM = "api_key";
@@ -54,6 +55,13 @@ public final class NetworkUtilities {
     public static URL buildMovieDbTrailerURL(long movieId) {
 
         String urlString = String.format(MOVIEDB_API_TRAILERS_URL, movieId);
+
+        return buildFinalMovieDbURL(urlString);
+    }
+
+    public static URL buildMovieDbDetailURL(long movieId) {
+
+        String urlString = String.format(MOVIEDB_API_MOVIEDETAIL_URL, movieId);
 
         return buildFinalMovieDbURL(urlString);
     }

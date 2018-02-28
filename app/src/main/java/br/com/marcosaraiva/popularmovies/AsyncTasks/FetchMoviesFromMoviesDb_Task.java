@@ -88,7 +88,11 @@ public class FetchMoviesFromMoviesDb_Task extends AsyncTask<Integer, Void, List<
             //Check which movie is a favorite
             for(Movie m: favoriteMoviesList){
                 if(returnedMovieList.contains(m)){
-                    returnedMovieList.get(returnedMovieList.indexOf(m)).setFavorite(true);
+                    int movieIndex = returnedMovieList.indexOf(m);
+
+                    //Sets favorite details!
+                    returnedMovieList.get(movieIndex).setFavorite(true);
+                    returnedMovieList.get(movieIndex).setRuntime(m.getRuntime());
                 }
             }
         }

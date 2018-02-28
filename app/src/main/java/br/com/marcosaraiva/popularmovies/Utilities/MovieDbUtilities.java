@@ -69,6 +69,45 @@ public final class MovieDbUtilities {
         }
     }
 
+    public static Movie getMovieDetailsFromAPIJSONResponse(String movieDbJSONResponse)
+            throws JSONException, RuntimeException {
+        //Error JSON
+        String MDB_STATUSCODE = "status_code";
+        String MDB_STATUSMESSAGE = "status_message";
+
+        //Success JSON
+        String MDB_ID = "id";
+        String MDB_TITLE = "title";
+        String MDB_OVERVIEW = "overview";
+        String MDB_POSTER = "poster_path";
+        String MDB_VOTE_AVERAGE = "vote_average";
+        String MDB_RELEASE_DATE = "release_date";
+        String MDB_RUNTIME = "runtime";
+
+        //Reads the returned JSON and converts it to a JSONObject.
+        JSONObject movieDbJSONObject = new JSONObject(movieDbJSONResponse);
+
+        //If anything went wrong in the MovieDb API Call
+        if (movieDbJSONObject.has(MDB_STATUSCODE)) {
+            throw new RuntimeException(movieDbJSONObject.getString(MDB_STATUSMESSAGE));
+        } else //If the API Call was successful
+        {
+            //Final movie to be returned
+            Movie returnedMovie = new Movie();
+
+            //Fills the movie with data
+            returnedMovie.setMovieId(movieDbJSONObject.getLong(MDB_ID));
+            returnedMovie.setTitle(movieDbJSONObject.getString(MDB_TITLE));
+            returnedMovie.setOverview(movieDbJSONObject.getString(MDB_OVERVIEW));
+            returnedMovie.setPosterRelativePath(movieDbJSONObject.getString(MDB_POSTER));
+            returnedMovie.setVoteAverage(movieDbJSONObject.getDouble(MDB_VOTE_AVERAGE));
+            returnedMovie.setReleaseDate(movieDbJSONObject.getString(MDB_RELEASE_DATE));
+            returnedMovie.setRuntime(movieDbJSONObject.getInt(MDB_RUNTIME));
+
+            return returnedMovie;
+        }
+    }
+
     public static List<Trailer> getListOfTrailersFromAPIJSONResponse(String movieDbJSONResponse)
             throws JSONException, RuntimeException {
         //Error JSON

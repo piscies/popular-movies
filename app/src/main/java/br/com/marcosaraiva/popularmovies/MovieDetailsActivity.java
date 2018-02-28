@@ -18,6 +18,7 @@ import com.squareup.picasso.Picasso;
 import java.util.List;
 
 import br.com.marcosaraiva.popularmovies.AsyncTasks.AsyncTaskExtendedInterface;
+import br.com.marcosaraiva.popularmovies.AsyncTasks.FetchMovieDetailFromMoviesDb_Task;
 import br.com.marcosaraiva.popularmovies.AsyncTasks.FetchReviewsFromMoviesDb_Task;
 import br.com.marcosaraiva.popularmovies.AsyncTasks.FetchTrailersFromMoviesDb_Task;
 import br.com.marcosaraiva.popularmovies.Database.PopularMoviesContract;
@@ -38,6 +39,7 @@ public class MovieDetailsActivity
     private TextView mdMovieOverviewTextView;
     private TextView mdMovieAverageRatingTextView;
     private TextView mdMovieReleaseDateTextView;
+    private TextView mdMovieRuntimeTextView;
     private ImageView mdMoviePosterImageView;
     private ImageButton mdFavoriteIconImageButton;
 
@@ -60,18 +62,17 @@ public class MovieDetailsActivity
         mdMovieReleaseDateTextView = findViewById(R.id.tv_movie_details_release_date);
         mdMoviePosterImageView = findViewById(R.id.iv_movie_details_poster);
         mdFavoriteIconImageButton = findViewById(R.id.ib_set_favorite);
+        mdMovieRuntimeTextView = findViewById(R.id.tv_movie_details_runtime);
 
         //Finds the movie in the Intent
         mdMovie = getIntent().getParcelableExtra(Movie.INTENT_EXTRA_MOVIE);
 
-        //Displays the details
-        mdMovieTitleTextView.setText(mdMovie.getTitle());
-        mdMovieOverviewTextView.setText(mdMovie.getOverview());
-        mdMovieAverageRatingTextView.setText(Double.toString(mdMovie.getVoteAverage()));
-        mdMovieReleaseDateTextView.setText(mdMovie.getReleaseDate());
-
-        String posterURL = NetworkUtilities.MOVIEDB_IMAGE_500_URL + mdMovie.getPosterRelativePath();
-        Picasso.with(this).load(posterURL).into(mdMoviePosterImageView);
+        //If movie isn't favorite, the details weren't saved in the DB. Gotta fetch them.
+        if(!mdMovie.isFavorite()){
+            loadMovieDetails(mdMovie.getMovieId());
+        }
+        else
+            setMovieDetailsInUI();
 
         //Trailer List adapter
         mdTrailerListAdapter = new TrailerListAdapter(this, this);
@@ -99,9 +100,14 @@ public class MovieDetailsActivity
 
         setFavoriteIcon();
 
-        //Loads the trailers list
+        //Loads the trailers and reviews list
         loadTrailers(mdMovie.getMovieId());
         loadReviews(mdMovie.getMovieId());
+    }
+
+    private void loadMovieDetails(long movieId) {
+
+        new FetchMovieDetailFromMoviesDb_Task(this).execute(movieId);
     }
 
     private void loadTrailers(long movieId) {
@@ -168,9 +174,24 @@ public class MovieDetailsActivity
             case FetchReviewsFromMoviesDb_Task.TASK_NAME:
                 mdReviewListAdapter.setReviewList((List<Review>) result);
                 break;
+            case FetchMovieDetailFromMoviesDb_Task.TASK_NAME:
+                mdMovie = (Movie) result;
+                setMovieDetailsInUI();
+                break;
             default:
                 throw new IllegalArgumentException("Unknown task name");
         }
+    }
+
+    private void setMovieDetailsInUI(){
+        mdMovieTitleTextView.setText(mdMovie.getTitle());
+        mdMovieOverviewTextView.setText(mdMovie.getOverview());
+        mdMovieAverageRatingTextView.setText(Double.toString(mdMovie.getVoteAverage()));
+        mdMovieReleaseDateTextView.setText(mdMovie.getReleaseDate());
+        mdMovieRuntimeTextView.setText(mdMovie.getRuntime());
+
+        String posterURL = NetworkUtilities.MOVIEDB_IMAGE_500_URL + mdMovie.getPosterRelativePath();
+        Picasso.with(this).load(posterURL).into(mdMoviePosterImageView);
     }
 
     public void saveOrRemoveFavoriteMovie(View view){
@@ -201,10 +222,10 @@ public class MovieDetailsActivity
 
     private void setFavoriteIcon(){
         if(mdMovie.isFavorite()){
-            mdFavoriteIconImageButton.setImageResource(R.drawable.ic_favorite_star_filled_foreground);
+            mdFavoriteIconImageButton.setImageResource(R.drawable.ic_favorite_star_filled);
         }
         else{
-            mdFavoriteIconImageButton.setImageResource(R.drawable.ic_favorite_star_empty_foreground);
+            mdFavoriteIconImageButton.setImageResource(R.drawable.ic_favorite_star_empty);
         }
     }
 }

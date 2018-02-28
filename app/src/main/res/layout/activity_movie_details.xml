@@ -100,14 +100,16 @@
 
         <TextView
             android:id="@+id/tv_movie_details_overview"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginLeft="16dp"
             android:layout_marginStart="16dp"
+            android:layout_marginRight="16dp"
+            android:layout_marginEnd="16dp"
             android:layout_marginTop="16dp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/iv_movie_details_poster"
-            tools:text="Lorem ipsum dolor lorem ipsum dolor" />
+            tools:text="Lorem ipsum dolor lorem ipsum dolor ipsum dolor lorem ipsum dolor ipsum dolor lorem ipsum dolor" />
 
         <ImageView
             android:id="@+id/iv_divider_main_trailer"
@@ -129,9 +131,11 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
+            android:layout_marginBottom="8dp"
             android:text="Trailers:"
+            android:textAppearance="@style/TextAppearance.Compat.Notification.Title"
             app:layout_constraintStart_toStartOf="@+id/tv_movie_details_overview"
-            app:layout_constraintTop_toBottomOf="@+id/iv_divider_main_trailer" />
+            app:layout_constraintTop_toBottomOf="@+id/iv_divider_main_trailer"/>
 
         <android.support.v7.widget.RecyclerView
             android:id="@+id/rv_trailers"
@@ -143,13 +147,18 @@
 
         <ImageView
             android:id="@+id/iv_divider_trailer_review"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
             android:layout_marginTop="16dp"
+            android:layout_marginStart="32dp"
+            android:layout_marginLeft="32dp"
+            android:layout_marginEnd="32dp"
+            android:layout_marginRight="32dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/rv_trailers"
-            app:srcCompat="@android:drawable/divider_horizontal_dark" />
+            app:srcCompat="@android:drawable/divider_horizontal_dark"
+            android:background="@android:color/darker_gray"/>
 
         <TextView
             android:id="@+id/tv_movie_details_review_label"
@@ -157,8 +166,11 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
             android:layout_marginLeft="8dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="8dp"
             android:text="Reviews:"
-            app:layout_constraintStart_toStartOf="parent"
+            android:textAppearance="@style/TextAppearance.Compat.Notification.Title"
+            app:layout_constraintStart_toStartOf="@+id/tv_movie_details_trailers_label"
             app:layout_constraintTop_toBottomOf="@+id/iv_divider_trailer_review" />
 
         <android.support.v7.widget.RecyclerView

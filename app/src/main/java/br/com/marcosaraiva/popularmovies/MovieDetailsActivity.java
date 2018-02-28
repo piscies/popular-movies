@@ -190,7 +190,7 @@ public class MovieDetailsActivity
         mdMovieReleaseDateTextView.setText(mdMovie.getReleaseDate());
         mdMovieRuntimeTextView.setText(Integer.toString(mdMovie.getRuntime()));
 
-        String posterURL = NetworkUtilities.MOVIEDB_IMAGE_500_URL + mdMovie.getPosterRelativePath();
+        String posterURL = NetworkUtilities.MOVIEDB_IMAGE_780_URL + mdMovie.getPosterRelativePath();
         Picasso.with(this).load(posterURL).into(mdMoviePosterImageView);
     }
 

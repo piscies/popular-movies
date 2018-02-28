@@ -18,13 +18,16 @@ import br.com.marcosaraiva.popularmovies.BuildConfig;
  */
 
 public final class NetworkUtilities {
-    public static final String MOVIEDB_IMAGE_500_URL = "http://image.tmdb.org/t/p/w500/";
     private static final String ERROR_TAG = "NETWORK_UTILITIES";
+
+    public static final String MOVIEDB_IMAGE_780_URL = "http://image.tmdb.org/t/p/w780/";
     private static final String MOVIEDB_API_MOSTPOPULAR_URL = "https://api.themoviedb.org/3/movie/popular";
     private static final String MOVIEDB_API_TOPRATED_URL = "https://api.themoviedb.org/3/movie/top_rated";
+
     private static final String MOVIEDB_API_MOVIEDETAIL_URL = "https://api.themoviedb.org/3/movie/%s";
-    private static final String MOVIEDB_API_TRAILERS_URL = "https://api.themoviedb.org/3/movie/%s/videos";
-    private static final String MOVIEDB_API_REVIEWS_URL = "https://api.themoviedb.org/3/movie/%s/reviews";
+    private static final String MOVIEDB_API_MOVIEDETAIL_TRAILERS_URL = MOVIEDB_API_MOVIEDETAIL_URL + "/videos";
+    private static final String MOVIEDB_API_MOVIEDETAIL_REVIEWS_URL = MOVIEDB_API_MOVIEDETAIL_URL + "/reviews";
+
     private static final String APIKEY_PARAM = "api_key";
 
     private static URL buildFinalMovieDbURL(String urlString){
@@ -47,14 +50,14 @@ public final class NetworkUtilities {
 
     public static URL buildMovieDbReviewURL(long movieId) {
 
-        String urlString = String.format(MOVIEDB_API_REVIEWS_URL, movieId);
+        String urlString = String.format(MOVIEDB_API_MOVIEDETAIL_REVIEWS_URL, movieId);
 
         return buildFinalMovieDbURL(urlString);
     }
 
     public static URL buildMovieDbTrailerURL(long movieId) {
 
-        String urlString = String.format(MOVIEDB_API_TRAILERS_URL, movieId);
+        String urlString = String.format(MOVIEDB_API_MOVIEDETAIL_TRAILERS_URL, movieId);
 
         return buildFinalMovieDbURL(urlString);
     }

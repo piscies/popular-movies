@@ -1,32 +1,21 @@
 package br.com.marcosaraiva.popularmovies;
 
 import android.content.Intent;
-import android.database.Cursor;
-import android.net.Uri;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Toast;
 
-import org.json.JSONException;
-
-import java.net.URL;
 import java.util.List;
 
 import br.com.marcosaraiva.popularmovies.AsyncTasks.AsyncTaskExtendedInterface;
 import br.com.marcosaraiva.popularmovies.AsyncTasks.FetchMoviesFromMoviesDb_Task;
-import br.com.marcosaraiva.popularmovies.Database.PopularMoviesContract;
 import br.com.marcosaraiva.popularmovies.Model.Movie;
 import br.com.marcosaraiva.popularmovies.Utilities.PopularMoviesPreferences;
-import br.com.marcosaraiva.popularmovies.Utilities.MovieDbUtilities;
 import br.com.marcosaraiva.popularmovies.Utilities.MovieDisplayMode;
-import br.com.marcosaraiva.popularmovies.Utilities.NetworkUtilities;
-import br.com.marcosaraiva.popularmovies.Utilities.PopularMoviesUtilities;
 
 public class MainActivity extends AppCompatActivity
         implements MovieListAdapter.MovieListAdapterOnClickHandler, AsyncTaskExtendedInterface {
@@ -49,7 +38,7 @@ public class MainActivity extends AppCompatActivity
         mMoviesRecyclerView.setAdapter(mMovieListAdapter);
 
         RecyclerView.LayoutManager layoutManager
-                = new GridLayoutManager(this, 3);
+                = new GridLayoutManager(this, 2);
 
         mMoviesRecyclerView.setLayoutManager(layoutManager);
 
@@ -106,7 +95,7 @@ public class MainActivity extends AppCompatActivity
 
         switch (task) {
             case FetchMoviesFromMoviesDb_Task.TASK_NAME:
-                mMovieListAdapter.setMovieList((List<Movie>)result);
+                mMovieListAdapter.setMovieList((List<Movie>) result);
                 break;
             default:
                 throw new IllegalArgumentException("Unknown task name");

@@ -6,6 +6,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.squareup.picasso.Picasso;
 
@@ -57,8 +58,13 @@ public class MovieListAdapter extends RecyclerView.Adapter<MovieListAdapter.Movi
         Movie currentMovie = mlaMovieList.get(position);
 
         //Movie poster
-        String backdropURL = NetworkUtilities.MOVIEDB_IMAGE_500_URL + currentMovie.getPosterRelativePath();
+        String backdropURL = NetworkUtilities.MOVIEDB_IMAGE_780_URL + currentMovie.getPosterRelativePath();
         Picasso.with(mlaContext).load(backdropURL).into(holder.mMoviePosterImageView);
+
+        if(currentMovie.isFavorite())
+            holder.mFavoriteStarImageView.setVisibility(View.VISIBLE);
+        else
+            holder.mFavoriteStarImageView.setVisibility(View.INVISIBLE);
     }
 
     @Override
@@ -78,10 +84,12 @@ public class MovieListAdapter extends RecyclerView.Adapter<MovieListAdapter.Movi
     /*ViewHolder class for the MovieListAdapter*/
     public class MovieListAdapterViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         public ImageView mMoviePosterImageView;
+        public ImageView mFavoriteStarImageView;
 
         public MovieListAdapterViewHolder(View view) {
             super(view);
             mMoviePosterImageView = view.findViewById(R.id.iv_movie_poster);
+            mFavoriteStarImageView = view.findViewById(R.id.iv_main_list_favorite_star);
             view.setOnClickListener(this);
         }
 

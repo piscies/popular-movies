@@ -108,75 +108,20 @@
         app:layout_constraintEnd_toEndOf="parent"
         tools:text="Lorem ipsum dolor lorem ipsum dolor ipsum dolor lorem ipsum dolor ipsum dolor lorem ipsum dolor" />
 
-        <ImageView
-            android:id="@+id/iv_divider_main_trailer"
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:layout_marginTop="16dp"
-            android:layout_marginStart="32dp"
-            android:layout_marginLeft="32dp"
-            android:layout_marginEnd="32dp"
-            android:layout_marginRight="32dp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/iv_movie_details_poster"
-            app:srcCompat="@android:drawable/divider_horizontal_dark"
-            android:background="@android:color/darker_gray"/>
-
-        <TextView
-            android:id="@+id/tv_movie_details_trailers_label"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:layout_marginBottom="8dp"
-            android:text="Trailers:"
-            android:textAppearance="@style/TextAppearance.Compat.Notification.Title"
-            app:layout_constraintStart_toStartOf="@+id/iv_movie_poster"
-            app:layout_constraintTop_toBottomOf="@+id/iv_divider_main_trailer"/>
-
-        <android.support.v7.widget.RecyclerView
-            android:id="@+id/rv_trailers"
-            android:orientation="vertical"
+        <include layout="@layout/trailers_panel"
+            android:id="@+id/include_trailers"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:layout_constraintStart_toStartOf="@+id/tv_movie_details_trailers_label"
-            app:layout_constraintTop_toBottomOf="@+id/tv_movie_details_trailers_label" />
+            app:layout_constraintTop_toBottomOf="@id/iv_movie_details_poster"
+            app:layout_constraintStart_toStartOf="@id/iv_movie_details_poster"/>
 
-        <ImageView
-            android:id="@+id/iv_divider_trailer_review"
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:layout_marginTop="16dp"
-            android:layout_marginStart="32dp"
-            android:layout_marginLeft="32dp"
-            android:layout_marginEnd="32dp"
-            android:layout_marginRight="32dp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/rv_trailers"
-            app:srcCompat="@android:drawable/divider_horizontal_dark"
-            android:background="@android:color/darker_gray"/>
 
-        <TextView
-            android:id="@+id/tv_movie_details_review_label"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="8dp"
-            android:layout_marginLeft="8dp"
-            android:layout_marginTop="8dp"
-            android:layout_marginBottom="8dp"
-            android:text="Reviews:"
-            android:textAppearance="@style/TextAppearance.Compat.Notification.Title"
-            app:layout_constraintStart_toStartOf="@+id/tv_movie_details_trailers_label"
-            app:layout_constraintTop_toBottomOf="@+id/iv_divider_trailer_review" />
-
-        <android.support.v7.widget.RecyclerView
-            android:id="@+id/rv_reviews"
-            android:orientation="vertical"
+        <include layout="@layout/reviews_panel"
+            android:id="@+id/include_reviews"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:layout_constraintStart_toStartOf="@+id/tv_movie_details_review_label"
-            app:layout_constraintTop_toBottomOf="@+id/tv_movie_details_review_label" />
+            app:layout_constraintTop_toBottomOf="@id/include_trailers"
+            app:layout_constraintStart_toStartOf="@id/include_trailers"/>
 
 
     </android.support.constraint.ConstraintLayout>

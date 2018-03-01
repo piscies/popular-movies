@@ -21,6 +21,7 @@ public final class NetworkUtilities {
     private static final String ERROR_TAG = "NETWORK_UTILITIES";
 
     public static final String MOVIEDB_IMAGE_780_URL = "http://image.tmdb.org/t/p/w780/";
+    public static final String MOVIEDB_IMAGE_500_URL = "http://image.tmdb.org/t/p/w500/";
     private static final String MOVIEDB_API_MOSTPOPULAR_URL = "https://api.themoviedb.org/3/movie/popular";
     private static final String MOVIEDB_API_TOPRATED_URL = "https://api.themoviedb.org/3/movie/top_rated";
 

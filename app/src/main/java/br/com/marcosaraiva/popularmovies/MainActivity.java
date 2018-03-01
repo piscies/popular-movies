@@ -17,6 +17,8 @@ import br.com.marcosaraiva.popularmovies.Model.Movie;
 import br.com.marcosaraiva.popularmovies.Utilities.PopularMoviesPreferences;
 import br.com.marcosaraiva.popularmovies.Utilities.MovieDisplayMode;
 
+import static android.content.res.Configuration.ORIENTATION_PORTRAIT;
+
 public class MainActivity extends AppCompatActivity
         implements MovieListAdapter.MovieListAdapterOnClickHandler, AsyncTaskExtendedInterface {
 
@@ -37,8 +39,16 @@ public class MainActivity extends AppCompatActivity
         mMoviesRecyclerView = findViewById(R.id.rv_movies_list);
         mMoviesRecyclerView.setAdapter(mMovieListAdapter);
 
+        //Differences between PORTRAIT and LANDSCAPE
+        int layoutSpanCount;
+
+        if(getResources().getConfiguration().orientation == ORIENTATION_PORTRAIT)
+            layoutSpanCount = 2;
+        else
+            layoutSpanCount = 5;
+
         RecyclerView.LayoutManager layoutManager
-                = new GridLayoutManager(this, 2);
+                = new GridLayoutManager(this, layoutSpanCount);
 
         mMoviesRecyclerView.setLayoutManager(layoutManager);
 

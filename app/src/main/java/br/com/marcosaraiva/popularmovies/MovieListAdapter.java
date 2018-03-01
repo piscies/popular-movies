@@ -10,10 +10,13 @@ import android.widget.TextView;
 
 import com.squareup.picasso.Picasso;
 
+import java.net.URL;
 import java.util.List;
 
 import br.com.marcosaraiva.popularmovies.Model.Movie;
 import br.com.marcosaraiva.popularmovies.Utilities.NetworkUtilities;
+
+import static android.content.res.Configuration.ORIENTATION_PORTRAIT;
 
 /**
  * Created by marco on 06/01/2018.
@@ -58,7 +61,14 @@ public class MovieListAdapter extends RecyclerView.Adapter<MovieListAdapter.Movi
         Movie currentMovie = mlaMovieList.get(position);
 
         //Movie poster
-        String backdropURL = NetworkUtilities.MOVIEDB_IMAGE_780_URL + currentMovie.getPosterRelativePath();
+        String posterBaseURL;
+
+        if(mlaContext.getResources().getConfiguration().orientation == ORIENTATION_PORTRAIT)
+            posterBaseURL = NetworkUtilities.MOVIEDB_IMAGE_780_URL;
+        else
+            posterBaseURL = NetworkUtilities.MOVIEDB_IMAGE_500_URL;
+
+        String backdropURL = posterBaseURL + currentMovie.getPosterRelativePath();
         Picasso.with(mlaContext).load(backdropURL).into(holder.mMoviePosterImageView);
 
         if(currentMovie.isFavorite())

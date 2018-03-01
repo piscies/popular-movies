@@ -52,8 +52,8 @@ public class FetchMoviesFromMoviesDb_Task extends AsyncTask<Integer, Void, List<
         //Gets favorite movies from db. This will always be called because we'll mark
         //favorite movies in the main screen.
         Uri favoriteMoviesUri = PopularMoviesContract.FavoriteMovieEntry.CONTENT_URI;
-        Cursor cursor = taskContext.getContentResolver().query(favoriteMoviesUri, null, null,
-                null, null);
+        Cursor cursor = taskContext.getContentResolver().query(favoriteMoviesUri, PopularMoviesUtilities.FAVORITE_MOVIES_PROJECTION,
+                null,null, null);
 
         favoriteMoviesList = PopularMoviesUtilities.getMovieListFromCursor(cursor);
 

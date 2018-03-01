@@ -25,13 +25,13 @@ public class PopularMoviesUtilities {
             PopularMoviesContract.FavoriteMovieEntry.COLUMN_VOTE_AVERAGE
     };
 
-    private static final int MOVIE_ID_INDEX = 1;
-    private static final int TITLE_INDEX = 2;
-    private static final int OVERVIEW_INDEX = 3;
-    private static final int POSTER_PATH_INDEX = 4;
-    private static final int RELEASE_DATE_INDEX = 5;
-    private static final int RUNTIME_INDEX = 6;
-    private static final int VOTE_AVERAGE_INDEX = 7;
+    private static final int MOVIE_ID_INDEX = 0;
+    private static final int TITLE_INDEX = 1;
+    private static final int OVERVIEW_INDEX = 2;
+    private static final int POSTER_PATH_INDEX = 3;
+    private static final int RELEASE_DATE_INDEX = 4;
+    private static final int RUNTIME_INDEX = 5;
+    private static final int VOTE_AVERAGE_INDEX = 6;
 
     public static List<Movie> getMovieListFromCursor(Cursor cursor){
         List<Movie> movieList = new ArrayList();
@@ -46,7 +46,7 @@ public class PopularMoviesUtilities {
                 movie.setPosterRelativePath(cursor.getString(POSTER_PATH_INDEX));
                 movie.setReleaseDate(cursor.getString(RELEASE_DATE_INDEX));
                 movie.setRuntime(cursor.getInt(RUNTIME_INDEX));
-                movie.setVoteAverage(cursor.getFloat(VOTE_AVERAGE_INDEX));
+                movie.setVoteAverage(cursor.getDouble(VOTE_AVERAGE_INDEX));
 
                 movieList.add(movie);
 

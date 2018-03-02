@@ -80,6 +80,7 @@ public final class NetworkUtilities {
                 break;
             case MovieDisplayMode.HIGHEST_RATED:
                 chosenURLBasedOnSortBy = MOVIEDB_API_TOPRATED_URL;
+                break;
             default:
                 throw new IllegalArgumentException(String.format("No URL to generate for displayMode '%s'", displayMode));
         }

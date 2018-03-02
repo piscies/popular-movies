@@ -8,8 +8,6 @@ import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
-import javax.xml.transform.URIResolver;
-
 /**
  * Created by marco on 24/02/2018.
  * Content Provider for the Popular Movies app.
@@ -17,13 +15,13 @@ import javax.xml.transform.URIResolver;
 
 public class PopularMoviesProvider extends ContentProvider {
 
-    public static final int CODE_FAVORITE_MOVIES = 101;
-    public static final int CODE_FAVORITE_MOVIES_SINGLE = 102;
+    private static final int CODE_FAVORITE_MOVIES = 101;
+    private static final int CODE_FAVORITE_MOVIES_SINGLE = 102;
 
-    private UriMatcher uriMatcher = buildUriMatcher();
+    private final UriMatcher uriMatcher = buildUriMatcher();
     private PopularMoviesDbHelper dbHelper;
 
-    public static UriMatcher buildUriMatcher() {
+    private static UriMatcher buildUriMatcher() {
         final UriMatcher matcher = new UriMatcher(UriMatcher.NO_MATCH);
 
         matcher.addURI(PopularMoviesContract.CONTENT_AUTHORITY, PopularMoviesContract.PATH_FAVORITES, CODE_FAVORITE_MOVIES);
@@ -95,7 +93,7 @@ public class PopularMoviesProvider extends ContentProvider {
 
     @Override
     public int delete(@NonNull Uri uri, @Nullable String whereClause, @Nullable String[] whereArgs) {
-        int nRowsDeleted = 0;
+        int nRowsDeleted;
 
         switch(uriMatcher.match(uri)){
             case CODE_FAVORITE_MOVIES_SINGLE:

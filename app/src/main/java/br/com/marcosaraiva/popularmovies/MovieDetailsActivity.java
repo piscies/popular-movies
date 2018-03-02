@@ -43,10 +43,7 @@ public class MovieDetailsActivity
     private ImageView mdMoviePosterImageView;
     private ImageButton mdFavoriteIconImageButton;
 
-    private RecyclerView mdTrailersRecyclerView;
     private TrailerListAdapter mdTrailerListAdapter;
-
-    private RecyclerView mdReviewsRecyclerView;
     private ReviewListAdapter mdReviewListAdapter;
 
     private Movie mdMovie;
@@ -75,10 +72,10 @@ public class MovieDetailsActivity
             setMovieDetailsInUI();
 
         //Trailer List adapter
-        mdTrailerListAdapter = new TrailerListAdapter(this, this);
+        mdTrailerListAdapter = new TrailerListAdapter(this);
 
         //Gets the trailer list recycler view and configures it
-        mdTrailersRecyclerView = findViewById(R.id.rv_trailers);
+        RecyclerView mdTrailersRecyclerView = findViewById(R.id.rv_trailers);
         mdTrailersRecyclerView.setAdapter(mdTrailerListAdapter);
 
         RecyclerView.LayoutManager trailerLayoutManager
@@ -87,10 +84,10 @@ public class MovieDetailsActivity
         mdTrailersRecyclerView.setLayoutManager(trailerLayoutManager);
 
         //Review List adapter
-        mdReviewListAdapter = new ReviewListAdapter(this, this);
+        mdReviewListAdapter = new ReviewListAdapter(this);
 
         //Gets the review list recycler view and configures it
-        mdReviewsRecyclerView = findViewById(R.id.rv_reviews);
+        RecyclerView mdReviewsRecyclerView = findViewById(R.id.rv_reviews);
         mdReviewsRecyclerView.setAdapter(mdReviewListAdapter);
 
         RecyclerView.LayoutManager reviewLayoutManager
@@ -199,9 +196,8 @@ public class MovieDetailsActivity
     public void saveOrRemoveFavoriteMovie(View view){
         Uri contentUri = PopularMoviesContract.FavoriteMovieEntry.CONTENT_URI;
 
-        //TODO: Needs to run asynchronously? (probably)
         if(mdMovie.isFavorite()){
-            contentUri = contentUri.withAppendedPath(contentUri, String.valueOf(mdMovie.getMovieId()));
+            contentUri = Uri.withAppendedPath(contentUri, String.valueOf(mdMovie.getMovieId()));
             getContentResolver().delete(contentUri, null, null);
             mdMovie.setFavorite(false);
         }

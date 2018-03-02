@@ -21,9 +21,10 @@
         <activity
             android:name=".MovieDetailsActivity"
             android:parentActivityName=".MainActivity" />
+
         <provider
-            android:authorities="br.com.marcosaraiva.popularmovies"
             android:name=".Database.PopularMoviesProvider"
+            android:authorities="br.com.marcosaraiva.popularmovies"
             android:exported="false" />
     </application>
 

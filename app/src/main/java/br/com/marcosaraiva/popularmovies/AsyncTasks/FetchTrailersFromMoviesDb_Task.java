@@ -2,7 +2,6 @@ package br.com.marcosaraiva.popularmovies.AsyncTasks;
 
 import android.os.AsyncTask;
 import android.util.Log;
-import android.widget.Toast;
 
 import org.json.JSONException;
 
@@ -10,7 +9,6 @@ import java.net.URL;
 import java.util.List;
 
 import br.com.marcosaraiva.popularmovies.Model.Trailer;
-import br.com.marcosaraiva.popularmovies.R;
 import br.com.marcosaraiva.popularmovies.Utilities.MovieDbUtilities;
 import br.com.marcosaraiva.popularmovies.Utilities.NetworkUtilities;
 
@@ -23,7 +21,7 @@ public class FetchTrailersFromMoviesDb_Task extends AsyncTask<Long, Void, List<T
     private final String ERROR_TAG = "TRAILER_TASK_ERROR";
     public static final String TASK_NAME = "FETCH_TRAILER_TASK";
 
-    private AsyncTaskExtendedInterface extendedInterface;
+    private final AsyncTaskExtendedInterface extendedInterface;
 
     public FetchTrailersFromMoviesDb_Task(AsyncTaskExtendedInterface pExtendedInterface){
         this.extendedInterface = pExtendedInterface;
@@ -35,7 +33,7 @@ public class FetchTrailersFromMoviesDb_Task extends AsyncTask<Long, Void, List<T
 
     @Override
     protected List<Trailer> doInBackground(Long... params) {
-        long movieId = 0;
+        long movieId;
 
         //If there are no parameters, calls the SortyBy Popularity by default
         if (params.length > 0)

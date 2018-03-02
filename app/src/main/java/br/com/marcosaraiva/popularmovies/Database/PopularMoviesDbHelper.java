@@ -11,9 +11,9 @@ import br.com.marcosaraiva.popularmovies.Database.PopularMoviesContract.Favorite
  * Helper class for Popular Movies DB
  */
 
-public class PopularMoviesDbHelper extends SQLiteOpenHelper {
+class PopularMoviesDbHelper extends SQLiteOpenHelper {
 
-    public static final String DATABASE_NAME = "popularmovies.db";
+    private static final String DATABASE_NAME = "popularmovies.db";
     private static final int DATABASE_VERSION = 1;
 
     public PopularMoviesDbHelper(Context context) {

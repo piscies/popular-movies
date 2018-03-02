@@ -28,9 +28,9 @@ public class FetchMoviesFromMoviesDb_Task extends AsyncTask<Integer, Void, List<
     private final String ERROR_TAG = "MOVIE_TASK_ERROR";
     public static final String TASK_NAME = "FETCH_MOVIE_TASK";
 
-    private AsyncTaskExtendedInterface extendedInterface;
+    private final AsyncTaskExtendedInterface extendedInterface;
 
-    Context taskContext;
+    private final Context taskContext;
 
     public FetchMoviesFromMoviesDb_Task(AsyncTaskExtendedInterface pExtendedInterface, Context context) {
         this.extendedInterface = pExtendedInterface;

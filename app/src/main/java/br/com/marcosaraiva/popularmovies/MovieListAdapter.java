@@ -6,11 +6,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
-import android.widget.TextView;
 
 import com.squareup.picasso.Picasso;
 
-import java.net.URL;
 import java.util.List;
 
 import br.com.marcosaraiva.popularmovies.Model.Movie;
@@ -24,12 +22,12 @@ import static android.content.res.Configuration.ORIENTATION_PORTRAIT;
  */
 
 public class MovieListAdapter extends RecyclerView.Adapter<MovieListAdapter.MovieListAdapterViewHolder> {
-    private Context mlaContext;
+    private final Context mlaContext;
 
     //Data list of movies that are displayed
     private List<Movie> mlaMovieList;
     //Interface for the method that will be called when a RecyclerView item is clicked.
-    private MovieListAdapterOnClickHandler mlaOnClickHandler;
+    private final MovieListAdapterOnClickHandler mlaOnClickHandler;
 
     //Constructor
     public MovieListAdapter(MovieListAdapterOnClickHandler pInClickHandler, Context pContext) {
@@ -93,8 +91,8 @@ public class MovieListAdapter extends RecyclerView.Adapter<MovieListAdapter.Movi
 
     /*ViewHolder class for the MovieListAdapter*/
     public class MovieListAdapterViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
-        public ImageView mMoviePosterImageView;
-        public ImageView mFavoriteStarImageView;
+        public final ImageView mMoviePosterImageView;
+        public final ImageView mFavoriteStarImageView;
 
         public MovieListAdapterViewHolder(View view) {
             super(view);

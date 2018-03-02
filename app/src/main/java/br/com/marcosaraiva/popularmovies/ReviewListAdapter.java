@@ -1,21 +1,14 @@
 package br.com.marcosaraiva.popularmovies;
 
-import android.content.Context;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 import android.widget.TextView;
-
-import com.squareup.picasso.Picasso;
 
 import java.util.List;
 
-import br.com.marcosaraiva.popularmovies.Model.Movie;
 import br.com.marcosaraiva.popularmovies.Model.Review;
-import br.com.marcosaraiva.popularmovies.Model.Trailer;
-import br.com.marcosaraiva.popularmovies.Utilities.NetworkUtilities;
 
 /**
  * Created by marco on 222/02/2018.
@@ -23,17 +16,14 @@ import br.com.marcosaraiva.popularmovies.Utilities.NetworkUtilities;
  */
 
 public class ReviewListAdapter extends RecyclerView.Adapter<ReviewListAdapter.ReviewListAdapterViewHolder> {
-    private Context rlaContext;
-
     //Data list of reviews that are displayed
     private List<Review> rlaReviewList;
     //Interface for the method that will be called when a RecyclerView item is clicked.
-    private ReviewListAdapterOnClickHandler rlaOnClickHandler;
+    private final ReviewListAdapterOnClickHandler rlaOnClickHandler;
 
     //Constructor
-    public ReviewListAdapter(ReviewListAdapterOnClickHandler pOnClickHandler, Context pContext) {
+    public ReviewListAdapter(ReviewListAdapterOnClickHandler pOnClickHandler) {
         rlaOnClickHandler = pOnClickHandler;
-        rlaContext = pContext;
     }
 
     public void setReviewList(List<Review> newList) {
@@ -80,13 +70,13 @@ public class ReviewListAdapter extends RecyclerView.Adapter<ReviewListAdapter.Re
 
     /*ViewHolder class for the TrailerListAdapter*/
     public class ReviewListAdapterViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
-        public TextView vhAuthorTextView;
-        public TextView vhReviewContentTextView;
+        public final TextView vhAuthorTextView;
+        public final TextView vhReviewContentTextView;
 
         public ReviewListAdapterViewHolder(View view) {
             super(view);
-            vhAuthorTextView = (TextView) view.findViewById(R.id.tv_review_author);
-            vhReviewContentTextView = (TextView) view.findViewById(R.id.tv_review_text);
+            vhAuthorTextView = view.findViewById(R.id.tv_review_author);
+            vhReviewContentTextView = view.findViewById(R.id.tv_review_text);
             view.setOnClickListener(this);
         }
 

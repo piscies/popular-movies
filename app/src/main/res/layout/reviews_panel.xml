@@ -1,42 +1,42 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
+
     <ImageView
         android:id="@+id/iv_divider_trailer_review"
         android:layout_width="match_parent"
         android:layout_height="1dp"
-        android:layout_marginTop="16dp"
-        android:layout_marginStart="32dp"
-        android:layout_marginLeft="32dp"
         android:layout_marginEnd="32dp"
+        android:layout_marginLeft="32dp"
         android:layout_marginRight="32dp"
+        android:layout_marginStart="32dp"
+        android:layout_marginTop="16dp"
+        android:background="@android:color/darker_gray"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="parent"
-        app:srcCompat="@android:drawable/divider_horizontal_dark"
-        android:background="@android:color/darker_gray"/>
+        app:srcCompat="@android:drawable/divider_horizontal_dark" />
 
     <TextView
         android:id="@+id/tv_movie_details_review_label"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginLeft="8dp"
-        android:layout_marginTop="8dp"
         android:layout_marginBottom="8dp"
-        android:text="Reviews:"
+        android:layout_marginLeft="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:text="@string/label_reviews"
         android:textAppearance="@style/TextAppearance.Compat.Notification.Title"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/iv_divider_trailer_review" />
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/rv_reviews"
-        android:orientation="vertical"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:orientation="vertical"
         app:layout_constraintStart_toStartOf="@+id/tv_movie_details_review_label"
         app:layout_constraintTop_toBottomOf="@+id/tv_movie_details_review_label" />
 </android.support.constraint.ConstraintLayout>

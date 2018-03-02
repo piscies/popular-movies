@@ -6,12 +6,14 @@
     <string name="action_sort_highest_rated">Sort by Highest Rated</string>
     <string name="action_show_favorites">Only show favorites</string>
 
-    <string name="text_movie_details_rating">Average rating:</string>
-    <string name="text_movie_details_overview">Synopsis:</string>
-    <string name="text_movie_details_release_date">Release date:</string>
+    <string name="label_runtime_minutes">min</string>
+    <string name="label_max_rating">/10</string>
+    <string name="label_reviews">Reviews:</string>
+    <string name="label_trailers">Trailers:</string>
 
-    <string name="description_backdrop">Backdrop image for the movie.</string>
     <string name="description_poster">Poster image for the movie</string>
+    <string name="description_play_image">Image that represents the play button for a video</string>
+    <string name="description_favorite_button">Favorites button</string>
 
     <string name="toast_error_message">Something went wrong. Please try again later.</string>
 

@@ -11,7 +11,7 @@ import android.provider.BaseColumns;
 public class PopularMoviesContract {
     //URI
     public static final String CONTENT_AUTHORITY = "br.com.marcosaraiva.popularmovies";
-    public static final Uri BASE_CONTENT_URI = Uri.parse("content://" + CONTENT_AUTHORITY);
+    private static final Uri BASE_CONTENT_URI = Uri.parse("content://" + CONTENT_AUTHORITY);
 
     //Paths
     public static final String PATH_FAVORITES = "favorites";

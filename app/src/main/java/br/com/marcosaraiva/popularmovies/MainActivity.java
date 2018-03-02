@@ -24,7 +24,6 @@ public class MainActivity extends AppCompatActivity
 
     private final String ERROR_TAG = "MAIN_ACTIVITY";
 
-    private RecyclerView mMoviesRecyclerView;
     private MovieListAdapter mMovieListAdapter;
 
     @Override
@@ -36,7 +35,7 @@ public class MainActivity extends AppCompatActivity
         mMovieListAdapter = new MovieListAdapter(this, this);
 
         //Gets the main recycler view and configures it
-        mMoviesRecyclerView = findViewById(R.id.rv_movies_list);
+        RecyclerView mMoviesRecyclerView = findViewById(R.id.rv_movies_list);
         mMoviesRecyclerView.setAdapter(mMovieListAdapter);
 
         //Differences between PORTRAIT and LANDSCAPE

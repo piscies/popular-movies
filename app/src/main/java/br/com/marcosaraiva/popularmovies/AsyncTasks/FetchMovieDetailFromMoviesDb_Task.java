@@ -1,22 +1,15 @@
 package br.com.marcosaraiva.popularmovies.AsyncTasks;
 
-import android.content.Context;
-import android.database.Cursor;
-import android.net.Uri;
 import android.os.AsyncTask;
 import android.util.Log;
 
 import org.json.JSONException;
 
 import java.net.URL;
-import java.util.List;
 
-import br.com.marcosaraiva.popularmovies.Database.PopularMoviesContract;
 import br.com.marcosaraiva.popularmovies.Model.Movie;
 import br.com.marcosaraiva.popularmovies.Utilities.MovieDbUtilities;
-import br.com.marcosaraiva.popularmovies.Utilities.MovieDisplayMode;
 import br.com.marcosaraiva.popularmovies.Utilities.NetworkUtilities;
-import br.com.marcosaraiva.popularmovies.Utilities.PopularMoviesUtilities;
 
 /**
  * Created by marco on 27/02/2018.
@@ -28,7 +21,7 @@ public class FetchMovieDetailFromMoviesDb_Task extends AsyncTask<Long, Void, Mov
     private final String ERROR_TAG = "MOVIEDETAIL_TASK_ERROR";
     public static final String TASK_NAME = "FETCH_MOVIEDETAIL_TASK";
 
-    private AsyncTaskExtendedInterface extendedInterface;
+    private final AsyncTaskExtendedInterface extendedInterface;
 
     public FetchMovieDetailFromMoviesDb_Task(AsyncTaskExtendedInterface pExtendedInterface) {
         this.extendedInterface = pExtendedInterface;

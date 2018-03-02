@@ -21,7 +21,7 @@ public class FetchReviewsFromMoviesDb_Task extends AsyncTask<Long, Void, List<Re
     private final String ERROR_TAG = "REVIEW_TASK_ERROR";
     public static final String TASK_NAME = "FETCH_REVIEW_TASK";
 
-    private AsyncTaskExtendedInterface extendedInterface;
+    private final AsyncTaskExtendedInterface extendedInterface;
 
     public FetchReviewsFromMoviesDb_Task(AsyncTaskExtendedInterface pExtendedInterface) {
         this.extendedInterface = pExtendedInterface;
@@ -34,7 +34,7 @@ public class FetchReviewsFromMoviesDb_Task extends AsyncTask<Long, Void, List<Re
 
     @Override
     protected List<Review> doInBackground(Long... params) {
-        long movieId = 0;
+        long movieId;
 
         //If there are no parameters, calls the SortyBy Popularity by default
         if (params.length > 0)

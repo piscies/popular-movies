@@ -64,7 +64,7 @@
             android:layout_height="wrap_content"
             android:layout_marginLeft="4dp"
             android:layout_marginStart="4dp"
-            android:text="min"
+            android:text="@string/label_runtime_minutes"
             app:layout_constraintStart_toEndOf="@+id/tv_movie_details_runtime"
             app:layout_constraintTop_toTopOf="@+id/tv_movie_details_runtime" />
 
@@ -82,7 +82,7 @@
             android:id="@+id/tv_movie_details_rating_max_label"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="/10"
+            android:text="@string/label_max_rating"
             android:textAppearance="@style/TextAppearance.AppCompat.Caption"
             app:layout_constraintStart_toEndOf="@+id/tv_movie_details_rating"
             app:layout_constraintTop_toTopOf="@+id/tv_movie_details_rating" />
@@ -92,39 +92,42 @@
             android:layout_width="40dp"
             android:layout_height="40dp"
             android:layout_marginTop="8dp"
+            android:background="@null"
+            android:onClick="saveOrRemoveFavoriteMovie"
+            android:contentDescription="@string/description_favorite_button"
             app:layout_constraintStart_toStartOf="@+id/tv_movie_details_rating"
             app:layout_constraintTop_toBottomOf="@+id/tv_movie_details_rating"
-            app:srcCompat="@android:drawable/star_big_off"
-            android:onClick="saveOrRemoveFavoriteMovie"
-            android:background="@null"/>
+            app:srcCompat="@android:drawable/star_big_off" />
 
         <TextView
             android:id="@+id/tv_movie_details_overview"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="16dp"
-            android:layout_marginStart="16dp"
-            android:layout_marginRight="16dp"
             android:layout_marginEnd="16dp"
+            android:layout_marginLeft="16dp"
+            android:layout_marginRight="16dp"
+            android:layout_marginStart="16dp"
             android:layout_marginTop="16dp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/iv_movie_details_poster"
             tools:text="Lorem ipsum dolor lorem ipsum dolor ipsum dolor lorem ipsum dolor ipsum dolor lorem ipsum dolor" />
 
-        <include layout="@layout/trailers_panel"
+        <include
             android:id="@+id/include_trailers"
+            layout="@layout/trailers_panel"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:layout_constraintTop_toBottomOf="@id/tv_movie_details_overview"
-            app:layout_constraintStart_toStartOf="@id/tv_movie_details_overview"/>
+            app:layout_constraintStart_toStartOf="@id/tv_movie_details_overview"
+            app:layout_constraintTop_toBottomOf="@id/tv_movie_details_overview" />
 
 
-        <include layout="@layout/reviews_panel"
+        <include
             android:id="@+id/include_reviews"
+            layout="@layout/reviews_panel"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:layout_constraintTop_toBottomOf="@id/include_trailers"
-            app:layout_constraintStart_toStartOf="@id/include_trailers"/>
+            app:layout_constraintStart_toStartOf="@id/include_trailers"
+            app:layout_constraintTop_toBottomOf="@id/include_trailers" />
 
     </android.support.constraint.ConstraintLayout>
 </ScrollView>

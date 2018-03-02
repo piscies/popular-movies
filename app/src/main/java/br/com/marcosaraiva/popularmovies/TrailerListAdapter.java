@@ -1,20 +1,14 @@
 package br.com.marcosaraiva.popularmovies;
 
-import android.content.Context;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 import android.widget.TextView;
-
-import com.squareup.picasso.Picasso;
 
 import java.util.List;
 
-import br.com.marcosaraiva.popularmovies.Model.Movie;
 import br.com.marcosaraiva.popularmovies.Model.Trailer;
-import br.com.marcosaraiva.popularmovies.Utilities.NetworkUtilities;
 
 /**
  * Created by marco on 20/02/2018.
@@ -22,17 +16,14 @@ import br.com.marcosaraiva.popularmovies.Utilities.NetworkUtilities;
  */
 
 public class TrailerListAdapter extends RecyclerView.Adapter<TrailerListAdapter.TrailerListAdapterViewHolder> {
-    private Context tlaContext;
-
     //Data list of trailers that are displayed
     private List<Trailer> tlaTrailerList;
     //Interface for the method that will be called when a RecyclerView item is clicked.
-    private TrailerListAdapterOnClickHandler tlaOnClickHandler;
+    private final TrailerListAdapterOnClickHandler tlaOnClickHandler;
 
     //Constructor
-    public TrailerListAdapter(TrailerListAdapterOnClickHandler pOnClickHandler, Context pContext) {
+    public TrailerListAdapter(TrailerListAdapterOnClickHandler pOnClickHandler) {
         tlaOnClickHandler = pOnClickHandler;
-        tlaContext = pContext;
     }
 
     public void setTrailerList(List<Trailer> newList) {
@@ -78,11 +69,11 @@ public class TrailerListAdapter extends RecyclerView.Adapter<TrailerListAdapter.
 
     /*ViewHolder class for the TrailerListAdapter*/
     public class TrailerListAdapterViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
-        public TextView mTrailerNameTextView;
+        public final TextView mTrailerNameTextView;
 
         public TrailerListAdapterViewHolder(View view) {
             super(view);
-            mTrailerNameTextView = (TextView) view.findViewById(R.id.tv_trailer_name);
+            mTrailerNameTextView = view.findViewById(R.id.tv_trailer_name);
             view.setOnClickListener(this);
         }
 
